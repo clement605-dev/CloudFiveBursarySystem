@@ -1,0 +1,619 @@
+﻿@{
+    ViewData["Title"] = "Welcome to CLOUD 5IVE";
+}
+
+<style>
+    /* Main landing page */
+    .home-page {
+        color: #172b4d;
+        overflow: hidden;
+    }
+
+    /* Hero banner */
+    .hero-section {
+        min-height: 490px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 65px 7%;
+        background: linear-gradient(90deg, rgba(8, 27, 58, 0.96) 0%, rgba(8, 27, 58, 0.86) 45%, rgba(8, 27, 58, 0.25) 100%), url('/images/cloudfive-five-students-banner.jpg');
+        background-size: cover;
+        background-position: center;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .hero-content {
+        max-width: 680px;
+        color: white;
+    }
+
+    .hero-label {
+        display: inline-block;
+        background: rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 30px;
+        padding: 9px 17px;
+        font-size: 12px;
+        letter-spacing: 1px;
+        margin-bottom: 22px;
+    }
+
+    .hero-content h1 {
+        font-size: 47px;
+        line-height: 1.2;
+        font-weight: 800;
+        margin-bottom: 20px;
+    }
+
+        .hero-content h1 span {
+            color: #8eb9ff;
+        }
+
+    .hero-content p {
+        color: #e1e9f5;
+        font-size: 16px;
+        line-height: 1.8;
+        max-width: 590px;
+        margin-bottom: 28px;
+    }
+
+    .hero-button {
+        display: inline-block;
+        padding: 13px 27px;
+        border-radius: 8px;
+        background: white;
+        color: #10294c;
+        font-weight: 700;
+        text-decoration: none;
+        margin-right: 10px;
+        transition: 0.2s ease;
+    }
+
+        .hero-button:hover {
+            background: #dce9ff;
+            color: #10294c;
+            transform: translateY(-3px);
+        }
+
+    .hero-button-outline {
+        display: inline-block;
+        padding: 12px 27px;
+        border: 1px solid white;
+        border-radius: 8px;
+        color: white;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.2s ease;
+    }
+
+        .hero-button-outline:hover {
+            background: white;
+            color: #10294c;
+        }
+
+    /* General section styling */
+    .home-section {
+        padding: 75px 5%;
+    }
+
+    .section-heading {
+        text-align: center;
+        margin-bottom: 45px;
+    }
+
+        .section-heading h2 {
+            font-weight: 800;
+            color: #10294c;
+            margin-bottom: 12px;
+        }
+
+        .section-heading p {
+            color: #73829a;
+            max-width: 650px;
+            margin: auto;
+            line-height: 1.7;
+        }
+
+    .section-label {
+        color: #2457c5;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    /* About section */
+    .about-section {
+        background: #f6f8fc;
+    }
+
+    .about-content {
+        max-width: 850px;
+        margin: auto;
+        text-align: center;
+    }
+
+        .about-content p {
+            color: #65748b;
+            font-size: 15px;
+            line-height: 1.9;
+        }
+
+    .about-icon {
+        width: 75px;
+        height: 75px;
+        background: #e6efff;
+        color: #2457c5;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        margin: 0 auto 22px;
+    }
+
+    /* Services cards */
+    .service-card {
+        background: white;
+        border: 1px solid #edf0f5;
+        border-radius: 15px;
+        padding: 30px 24px;
+        height: 100%;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+        .service-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            border-color: #d5e2fa;
+        }
+
+    .service-icon {
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eaf1ff;
+        color: #2457c5;
+        border-radius: 13px;
+        font-size: 25px;
+        margin-bottom: 22px;
+    }
+
+    .service-card h5 {
+        color: #10294c;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .service-card p {
+        color: #73829a;
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    /* How it works */
+    .steps-section {
+        background: #f6f8fc;
+    }
+
+    .step-card {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .step-number {
+        width: 55px;
+        height: 55px;
+        background: #10294c;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+        font-weight: 700;
+        margin: 0 auto 20px;
+    }
+
+    .step-card h5 {
+        font-weight: 700;
+        color: #10294c;
+        margin-bottom: 12px;
+    }
+
+    .step-card p {
+        font-size: 14px;
+        color: #73829a;
+        line-height: 1.7;
+    }
+
+    /* Final call to action */
+    .cta-section {
+        background: #10294c;
+        color: white;
+        text-align: center;
+        padding: 65px 20px;
+    }
+
+        .cta-section h2 {
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            color: #d6e0ef;
+            max-width: 650px;
+            margin: 0 auto 25px;
+            line-height: 1.8;
+        }
+
+    .cta-button {
+        display: inline-block;
+        background: white;
+        color: #10294c;
+        text-decoration: none;
+        font-weight: 700;
+        padding: 13px 28px;
+        border-radius: 8px;
+        transition: 0.2s ease;
+    }
+
+        .cta-button:hover {
+            background: #dce9ff;
+            color: #10294c;
+            transform: translateY(-3px);
+        }
+
+    /* Responsive design */
+    @@media (max-width: 768px) {
+        .hero-section {
+            min-height: 450px;
+            padding: 45px 25px;
+            background-position: 65% center;
+        }
+
+        .hero-content h1 {
+            font-size: 34px;
+        }
+
+        .hero-content p {
+            font-size: 14px;
+        }
+
+        .home-section {
+            padding: 55px 20px;
+        }
+
+        .hero-button,
+        .hero-button-outline {
+            margin-bottom: 10px;
+        }
+    }
+
+    @@media (max-width: 420px) {
+        .hero-content h1 {
+            font-size: 29px;
+        }
+    }
+</style>
+
+
+<div class="home-page">
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+
+        <div class="hero-content">
+
+            <span class="hero-label">
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                CLOUD 5IVE | BURSARY MANAGEMENT SYSTEM
+            </span>
+
+            <h1>
+                Empowering Education.<br />
+                <span>Creating Opportunities.</span>
+            </h1>
+
+            <p>
+                Your educational journey deserves support.
+                CLOUD 5IVE provides a convenient platform to
+                explore bursary opportunities, submit applications
+                and keep track of your funding progress.
+            </p>
+
+            <a asp-area="Identity"
+               asp-page="/Account/Register"
+               class="hero-button">
+
+                <i class="bi bi-person-plus-fill me-2"></i>
+                Get Started
+
+            </a>
+
+            <a asp-area="Identity"
+               asp-page="/Account/Login"
+               class="hero-button-outline">
+
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                Sign In
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT SECTION -->
+    <section class="home-section about-section">
+
+        <div class="about-content">
+
+            <div class="about-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <div class="section-heading mb-4">
+
+                <span class="section-label">
+                    About CLOUD 5IVE
+                </span>
+
+                <h2>Making Bursary Management Easier</h2>
+
+            </div>
+
+            <p>
+                CLOUD 5IVE is a web-based Bursary Management System
+                designed to simplify how bursary applications are
+                submitted, managed and reviewed.
+            </p>
+
+            <p>
+                The platform provides applicants with a central place
+                to access funding opportunities and monitor their
+                applications, while administrators can manage
+                programmes, review applications and maintain
+                beneficiary and payment records.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- SERVICES SECTION -->
+    <section class="home-section">
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                What We Offer
+            </span>
+
+            <h2>Our Platform Services</h2>
+
+            <p>
+                Everything is organised in one convenient platform
+                to make bursary administration easier.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+
+                    <h5>Bursary Opportunities</h5>
+
+                    <p>
+                        Explore available bursary programmes
+                        and learn about their funding requirements.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+
+                    <h5>Online Applications</h5>
+
+                    <p>
+                        Submit your bursary applications
+                        through a convenient online platform.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-clipboard-check"></i>
+                    </div>
+
+                    <h5>Application Tracking</h5>
+
+                    <p>
+                        Keep track of submitted applications
+                        and monitor their review status.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-bar-chart-line"></i>
+                    </div>
+
+                    <h5>Administration & Reports</h5>
+
+                    <p>
+                        Support administrators with application
+                        reviews, beneficiary records and reports.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="home-section steps-section">
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                Getting Started
+            </span>
+
+            <h2>How It Works</h2>
+
+            <p>
+                Getting started with CLOUD 5IVE is simple.
+                Follow these steps to access the platform.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+
+                <div class="step-card">
+
+                    <div class="step-number">1</div>
+
+                    <h5>Create Your Account</h5>
+
+                    <p>
+                        Register your account and provide
+                        the required personal information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="step-card">
+
+                    <div class="step-number">2</div>
+
+                    <h5>Explore & Apply</h5>
+
+                    <p>
+                        Browse available bursary programmes
+                        and submit an application that meets
+                        the programme requirements.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="step-card">
+
+                    <div class="step-number">3</div>
+
+                    <h5>Track Your Application</h5>
+
+                    <p>
+                        Log in to your account to monitor
+                        your application status and progress.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CALL TO ACTION -->
+    <section class="cta-section">
+
+        <h2>Your Educational Journey Starts Here.</h2>
+
+        <p>
+            Take the next step towards accessing bursary
+            opportunities. Create your CLOUD 5IVE account
+            and get started today.
+        </p>
+
+        <a asp-area="Identity"
+           asp-page="/Account/Register"
+           class="cta-button">
+
+            Create Your Account
+            <i class="bi bi-arrow-right ms-2"></i>
+
+        </a>
+
+    </section>
+
+
+    <!-- PAGE FOOTER -->
+    <div class="text-center py-4">
+
+        <strong style="color:#10294c;">
+            CLOUD 5IVE
+        </strong>
+
+        <span class="text-muted mx-2">|</span>
+
+        <span class="text-muted">
+            Bursary Management System
+        </span>
+
+        <div class="small text-muted mt-2">
+            © @DateTime.Now.Year CLOUD 5IVE. All rights reserved.
+        </div>
+
+    </div>
+
+</div>

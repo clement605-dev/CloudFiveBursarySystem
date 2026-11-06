@@ -1,0 +1,191 @@
+﻿@model IEnumerable<CloudFiveBursarySystem.Models.Payment>
+
+@{
+    // Sets the browser page title.
+    ViewData["Title"] = "Payment Report";
+
+    // Calculates payment statistics from the database records.
+    var totalPayments = Model.Count();
+
+    var totalPaid = Model
+        .Where(p => p.PaymentStatus == "Paid")
+        .Sum(p => p.PaymentAmount);
+
+    var pendingPayments = Model
+        .Count(p => p.PaymentStatus == "Pending");
+
+    var failedPayments = Model
+        .Count(p => p.PaymentStatus == "Failed");
+
+    // Formats currency and dates using South African conventions.
+    var southAfricanCulture = new System.Globalization.CultureInfo("en-ZA");
+}
+
+<div class="container mt-4">
+
+    <!-- Report heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">CLOUD 5IVE</h2>
+        <h4>Payment Report</h4>
+
+        <p class="text-muted">
+            A summary of bursary payment records and their current statuses.
+        </p>
+    </div>
+
+    <hr />
+
+    <!-- Payment summary cards -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Payment Records</h6>
+                    <h2 class="text-primary fw-bold">@totalPayments</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Paid</h6>
+                    <h2 class="text-success fw-bold">
+                        @totalPaid.ToString("C2", southAfricanCulture)
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-warning">Pending Payments</h6>
+                    <h2 class="text-warning fw-bold">@pendingPayments</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-danger">Failed Payments</h6>
+                    <h2 class="text-danger fw-bold">@failedPayments</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Payment records table -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-3">Recorded Payments</h5>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Payment Reference</th>
+                                <th>Beneficiary</th>
+                                <th>Bursary Programme</th>
+                                <th>Amount</th>
+                                <th>Payment Date</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var payment in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @payment.PaymentReference
+                                    </td>
+
+                                    <td>
+                                        @payment.Beneficiary?.BursaryApplication?.Applicant?.FirstName
+                                        @payment.Beneficiary?.BursaryApplication?.Applicant?.LastName
+                                    </td>
+
+                                    <td>
+                                        @payment.Beneficiary?.BursaryApplication?.BursaryProgramme?.ProgrammeName
+                                    </td>
+
+                                    <td>
+                                        @payment.PaymentAmount.ToString("C2", southAfricanCulture)
+                                    </td>
+
+                                    <td>
+                                        @payment.PaymentDate.ToString("dd MMM yyyy", southAfricanCulture)
+                                    </td>
+
+                                    <td>
+                                        @switch (payment.PaymentStatus)
+                                        {
+                                            case "Paid":
+                                                <span class="badge bg-success">Paid</span>
+                                                break;
+
+                                            case "Pending":
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                                break;
+
+                                            case "Failed":
+                                                <span class="badge bg-danger">Failed</span>
+                                                break;
+
+                                            default:
+                                                <span class="badge bg-secondary">
+                                                    @payment.PaymentStatus
+                                                </span>
+                                                break;
+                                        }
+                                </td>
+
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(payment.Description)
+                                                                    ? "No description"
+                                                                    : payment.Description)
+                            </td>
+                        </tr>
+                                                }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    No payment records were found.
+                </div>
+            }
+
+            <!-- Navigation buttons -->
+            <hr />
+
+            <a asp-controller="Reports"
+               asp-action="Index"
+               class="btn btn-outline-secondary">
+                Back to Reports
+            </a>
+
+            <a asp-controller="AdminDashboard"
+               asp-action="Index"
+               class="btn btn-outline-primary">
+                Administrator Dashboard
+            </a>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,74 @@
+﻿@model CloudFiveBursarySystem.Models.BursaryProgramme
+
+@{
+    ViewData["Title"] = "Delete Bursary Programme";
+}
+
+<div class="container mt-5 mb-5">
+
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 650px;">
+
+        <div class="card-header bg-danger text-white py-3">
+            <h4 class="mb-0">Delete Bursary Programme</h4>
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="alert alert-warning">
+                <strong>Are you sure?</strong>
+                You are about to delete this bursary programme.
+                This action cannot be undone.
+            </div>
+
+            <h5 class="fw-bold mb-3">
+                @Model.ProgrammeName
+            </h5>
+
+            <hr />
+
+            <p>
+                <strong>Funding Amount:</strong><br />
+                R @Model.FundingAmount.ToString("N2")
+            </p>
+
+            <p>
+                <strong>Opening Date:</strong><br />
+                @Model.ApplicationOpeningDate.ToString("dd MMMM yyyy")
+            </p>
+
+            <p>
+                <strong>Closing Date:</strong><br />
+                @Model.ApplicationClosingDate.ToString("dd MMMM yyyy")
+            </p>
+
+            <p>
+                <strong>Status:</strong><br />
+                @Model.ProgrammeStatus
+            </p>
+
+            <hr />
+
+            <form asp-action="Delete" method="post">
+
+                <input type="hidden"
+                       asp-for="BursaryProgrammeId" />
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit" class="btn btn-danger">
+                        Confirm Delete
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,519 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - CLOUD 5IVE</title>
+
+    <!-- Bootstrap styling -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <!-- Application styling -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/CloudFiveBursarySystem.styles.css"
+          asp-append-version="true" />
+
+    <style>
+
+        /* Main navigation bar */
+        .main-navbar {
+            background-color: #10284b;
+            padding: 12px 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        /* CLOUD 5IVE branding */
+        .brand-name {
+            color: white !important;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+            .brand-name span {
+                color: #63a5ff;
+            }
+
+        .brand-subtitle {
+            display: block;
+            color: #cbd5e1;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            margin-top: -3px;
+        }
+
+        /* Navigation links */
+        .main-navbar .nav-link {
+            color: #e5eaf2 !important;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 13px !important;
+            transition: 0.2s ease;
+        }
+
+            .main-navbar .nav-link:hover {
+                color: white !important;
+                background-color: rgba(255, 255, 255, 0.12);
+                border-radius: 7px;
+            }
+
+            .main-navbar .nav-link i {
+                margin-right: 6px;
+            }
+
+        /* Notification bell */
+        .notification-bell-container {
+            position: relative;
+        }
+
+        .main-navbar .notification-bell-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 43px;
+            height: 43px;
+            padding: 8px !important;
+            border-radius: 50%;
+            font-size: 19px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 1px;
+            right: 0;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 20px;
+            background-color: #dc3545;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #10284b;
+        }
+
+        /* Notification dropdown */
+        .notification-dropdown {
+            width: 340px;
+            max-width: 90vw;
+            padding: 0;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .notification-dropdown-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .notification-item {
+            padding: 13px 15px;
+            white-space: normal;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+            .notification-item:hover {
+                background-color: #f4f7fb;
+            }
+
+        .notification-unread {
+            background-color: #eef5ff;
+        }
+
+        .notification-date {
+            font-size: 11px;
+            color: #8893a0;
+            margin-top: 5px;
+        }
+
+        .unread-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #0d6efd;
+            border-radius: 50%;
+            margin-left: 8px;
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        .notification-dropdown-footer {
+            padding: 13px;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+
+        /* Navigation toggle button */
+        .main-navbar .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .main-navbar .navbar-toggler-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Main application content */
+        .main-content {
+            min-height: 75vh;
+        }
+
+        /* Application footer */
+        .main-footer {
+            background-color: #10284b;
+            color: #cbd5e1;
+            padding: 20px 15px;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+            .main-footer strong {
+                color: white;
+            }
+
+        /* Mobile navigation adjustments */
+        @@media (max-width: 768px) {
+
+            .main-navbar {
+                padding: 12px 15px;
+            }
+
+                .main-navbar .navbar-collapse {
+                    padding-top: 15px;
+                }
+
+                .main-navbar .nav-link {
+                    padding: 10px !important;
+                }
+
+            .notification-dropdown {
+                width: 100%;
+                max-width: 340px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Main application navigation -->
+    <header>
+
+        <nav class="navbar navbar-expand-lg main-navbar">
+
+            <div class="container-fluid">
+
+                <!-- CLOUD 5IVE logo and branding -->
+                <a class="navbar-brand brand-name"
+                   asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <i class="bi bi-mortarboard-fill me-2"></i>
+
+                    CLOUD <span>5IVE</span>
+
+                    <small class="brand-subtitle">
+                        BURSARY MANAGEMENT SYSTEM
+                    </small>
+
+                </a>
+
+                <!-- Mobile navigation button -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavigation"
+                        aria-controls="mainNavigation"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
+                    <span class="navbar-toggler-icon"></span>
+
+                </button>
+
+                <!-- Navigation menu -->
+                <div class="collapse navbar-collapse"
+                     id="mainNavigation">
+
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+
+                            <!-- Applicant navigation -->
+                            @if (User.IsInRole("Applicant"))
+                            {
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="ApplicantDashboard"
+                                       asp-action="Index">
+
+                                        <i class="bi bi-speedometer2"></i>
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="AvailableBursaries"
+                                       asp-action="Index">
+
+                                        <i class="bi bi-mortarboard"></i>
+                                        Available Bursaries
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="Applications"
+                                       asp-action="Index">
+
+                                        <i class="bi bi-file-earmark-text"></i>
+                                        My Applications
+
+                                    </a>
+
+                                </li>
+
+                            }
+
+                            <!-- Administrator navigation -->
+                            @if (User.IsInRole("Administrator"))
+                            {
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="AdminDashboard"
+                                       asp-action="Index">
+
+                                        <i class="bi bi-speedometer2"></i>
+                                        Dashboard
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="BursaryProgrammes"
+                                       asp-action="Index">
+
+                                        <i class="bi bi-mortarboard"></i>
+                                        Programmes
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="AdminDashboard"
+                                       asp-action="Applicants">
+
+                                        <i class="bi bi-people"></i>
+                                        Applicants
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="AdminApplications"
+                                       asp-action="Index">
+
+                                        <i class="bi bi-file-earmark-check"></i>
+                                        Applications
+
+                                    </a>
+
+                                </li>
+
+                                <!-- NEW: Administrator Document Verification -->
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="AdminDocuments"
+                                       asp-action="Index">
+
+                                        <i class="bi bi-file-earmark-check-fill"></i>
+                                        Document Verification
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="AdminDashboard"
+                                       asp-action="Beneficiaries">
+
+                                        <i class="bi bi-person-check"></i>
+                                        Beneficiaries
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="Payments"
+                                       asp-action="Index">
+
+                                        <i class="bi bi-cash-stack"></i>
+                                        Payments
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       asp-controller="Reports"
+                                       asp-action="Index">
+
+                                        <i class="bi bi-bar-chart"></i>
+                                        Reports
+
+                                    </a>
+
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="AdminActivityLogs"
+                                       asp-action="Index">
+                                        <i class="bi bi-clock-history"></i>
+                                        Activity Logs
+                                    </a>
+                                </li>
+
+                            }
+
+                        }
+                        else
+                        {
+
+                            <!-- Navigation for visitors who are not logged in -->
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-controller="Home"
+                                   asp-action="Index">
+
+                                    <i class="bi bi-house"></i>
+                                    Home
+
+                                </a>
+
+                            </li>
+
+                        }
+
+                    </ul>
+
+                    <!-- Applicant notification bell -->
+                    @if (User.Identity != null &&
+                                        User.Identity.IsAuthenticated &&
+                                        User.IsInRole("Applicant"))
+                    {
+                        <div class="ms-lg-2">
+
+                            @await Component.InvokeAsync("NotificationBell")
+
+                        </div>
+                    }
+
+                    <!-- Existing Identity login/logout controls -->
+                    <div class="ms-lg-3 mt-3 mt-lg-0">
+
+                        <partial name="_LoginPartial" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+    <!-- Main page content -->
+    <main role="main" class="main-content">
+
+        @RenderBody()
+
+    </main>
+
+    <!-- Application footer -->
+    <footer class="main-footer">
+
+        <div class="container-fluid">
+
+            <strong>
+                CLOUD 5IVE
+            </strong>
+
+            <span class="mx-2">|</span>
+
+            Bursary Management System
+
+            <br />
+
+            <small>
+                © @DateTime.Now.Year CLOUD 5IVE.
+                All rights reserved.
+            </small>
+
+        </div>
+
+    </footer>
+
+    <!-- JavaScript libraries -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+
+</html>

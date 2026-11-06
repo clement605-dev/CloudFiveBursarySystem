@@ -1,0 +1,447 @@
+﻿@model CloudFiveBursarySystem.Models.Applicant
+
+@{
+    ViewData["Title"] = "Applicant Dashboard";
+}
+
+<style>
+    .dashboard-container {
+        padding-top: 25px;
+        padding-bottom: 50px;
+    }
+
+    .welcome-banner {
+        position: relative;
+        min-height: 300px;
+        border-radius: 18px;
+        overflow: hidden;
+        background: linear-gradient(90deg, rgba(9, 29, 65, 0.96) 0%, rgba(9, 29, 65, 0.78) 40%, rgba(9, 29, 65, 0.10) 100%), url('/images/cloudfive-applicant-banner.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: center;
+        padding: 45px;
+        color: white;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .welcome-content {
+        max-width: 650px;
+    }
+
+    .welcome-banner h1 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .welcome-banner p {
+        font-size: 16px;
+        line-height: 1.7;
+        color: #e5eaf3;
+    }
+
+    .welcome-label {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 8px 15px;
+        border-radius: 30px;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    .section-heading {
+        font-weight: 700;
+        color: #172b4d;
+    }
+
+    .summary-card {
+        border: none;
+        border-radius: 14px;
+        background: white;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        height: 100%;
+    }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.09);
+        }
+
+        .summary-card .card-body {
+            padding: 25px;
+        }
+
+    .summary-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .icon-blue {
+        background: #e8f0ff;
+        color: #2457c5;
+    }
+
+    .icon-green {
+        background: #e5f7ed;
+        color: #198754;
+    }
+
+    .icon-purple {
+        background: #f0eaff;
+        color: #7042c0;
+    }
+
+    .summary-number {
+        font-size: 30px;
+        font-weight: 700;
+        color: #172b4d;
+    }
+
+    .summary-label {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .quick-access-card {
+        background: white;
+        border: 1px solid #edf0f5;
+        border-radius: 14px;
+        padding: 22px;
+        height: 100%;
+        text-decoration: none;
+        color: #172b4d;
+        display: block;
+        transition: all 0.2s ease;
+    }
+
+        .quick-access-card:hover {
+            color: #2457c5;
+            border-color: #2457c5;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .quick-access-card h6 {
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        .quick-access-card p {
+            color: #6c757d;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+    .quick-icon {
+        font-size: 27px;
+        color: #2457c5;
+    }
+
+    .information-card {
+        border: none;
+        border-radius: 14px;
+        background: white;
+    }
+
+        .information-card .card-body {
+            padding: 28px;
+        }
+
+    .information-label {
+        color: #6c757d;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .information-value {
+        font-weight: 600;
+        color: #172b4d;
+        overflow-wrap: anywhere;
+    }
+
+    @@media (max-width: 768px) {
+        .welcome-banner {
+            padding: 30px 22px;
+            min-height: 260px;
+            background-position: center;
+        }
+
+            .welcome-banner h1 {
+                font-size: 27px;
+            }
+    }
+</style>
+
+<div class="container-fluid dashboard-container">
+
+    <!-- CLOUD 5IVE welcome banner -->
+    <div class="welcome-banner mb-5">
+        <div class="welcome-content">
+
+            <span class="welcome-label">
+                CLOUD 5IVE | BURSARY MANAGEMENT SYSTEM
+            </span>
+
+            <h1>Welcome back, @Model.FirstName!</h1>
+
+            <p>
+                Your educational journey matters to us.
+                Manage your bursary applications, explore available
+                funding opportunities and keep track of your progress
+                all in one place.
+            </p>
+
+            <a asp-controller="AvailableBursaries"
+               asp-action="Index"
+               class="btn btn-light fw-bold px-4 py-2 mt-2">
+
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                Explore Bursaries
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Dashboard overview -->
+    <div class="mb-4">
+        <h4 class="section-heading">Dashboard Overview</h4>
+
+        <p class="text-muted">
+            Here is a quick overview of your bursary account.
+        </p>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card summary-card shadow-sm">
+                <div class="card-body">
+
+                    <div class="summary-icon icon-blue">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+
+                    <div class="summary-label">
+                        Open Bursary Programmes
+                    </div>
+
+                    <div class="summary-number">
+                        @ViewBag.OpenProgrammeCount
+                    </div>
+
+                    <small class="text-muted">
+                        Programmes currently available.
+                    </small>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card summary-card shadow-sm">
+                <div class="card-body">
+
+                    <div class="summary-icon icon-green">
+                        <i class="bi bi-file-earmark-check-fill"></i>
+                    </div>
+
+                    <div class="summary-label">
+                        My Applications
+                    </div>
+
+                    <div class="summary-number">
+                        @ViewBag.ApplicationCount
+                    </div>
+
+                    <small class="text-muted">
+                        Applications submitted.
+                    </small>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card summary-card shadow-sm">
+                <div class="card-body">
+
+                    <div class="summary-icon icon-purple">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+
+                    <div class="summary-label">
+                        Account Information
+                    </div>
+
+                    <div class="fw-bold fs-5 mt-2">
+                        @Model.FirstName @Model.LastName
+                    </div>
+
+                    <small class="text-muted">
+                        Registered applicant.
+                    </small>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quick access navigation -->
+    <div class="mb-4">
+        <h4 class="section-heading">Quick Access</h4>
+
+        <p class="text-muted">
+            Quickly access the main services available on your account.
+        </p>
+    </div>
+
+    <div class="row g-4 mb-5">
+
+        <!-- Available bursaries -->
+        <div class="col-md-6 col-lg-3">
+            <a asp-controller="AvailableBursaries"
+               asp-action="Index"
+               class="quick-access-card shadow-sm">
+
+                <i class="bi bi-mortarboard-fill quick-icon"></i>
+
+                <h6>Available Bursaries</h6>
+
+                <p>
+                    Explore bursary programmes and funding opportunities.
+                </p>
+            </a>
+        </div>
+
+        <!-- My applications -->
+        <div class="col-md-6 col-lg-3">
+            <a asp-controller="Applications"
+               asp-action="Index"
+               class="quick-access-card shadow-sm">
+
+                <i class="bi bi-file-earmark-text-fill quick-icon"></i>
+
+                <h6>My Applications</h6>
+
+                <p>
+                    View and monitor your submitted applications.
+                </p>
+            </a>
+        </div>
+
+        <!-- My Documents - Connected to ApplicantDocumentsController -->
+        <div class="col-md-6 col-lg-3">
+            <a asp-controller="ApplicantDocuments"
+               asp-action="Index"
+               class="quick-access-card shadow-sm">
+
+                <i class="bi bi-folder-fill quick-icon"></i>
+
+                <h6>My Documents</h6>
+
+                <p>
+                    Upload, view and manage your supporting documents,
+                    including your ID, academic records and proof of registration.
+                </p>
+
+                <span class="badge bg-primary mt-3">
+                    Manage Documents
+                </span>
+
+            </a>
+        </div>
+
+        <!-- My Profile -->
+        <div class="col-md-6 col-lg-3">
+            <a asp-controller="Profile"
+               asp-action="Index"
+               class="quick-access-card shadow-sm">
+
+                <i class="bi bi-person-fill-gear quick-icon"></i>
+
+                <h6>My Profile</h6>
+
+                <p>
+                    View and update your personal information and contact details.
+                </p>
+
+                <span class="badge bg-primary mt-3">
+                    Manage Profile
+                </span>
+
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Applicant personal information -->
+    <div class="card information-card shadow-sm">
+        <div class="card-body">
+
+            <div class="d-flex align-items-center mb-4">
+
+                <i class="bi bi-person-vcard-fill text-primary fs-3 me-3"></i>
+
+                <div>
+                    <h4 class="section-heading mb-1">
+                        Applicant Information
+                    </h4>
+
+                    <small class="text-muted">
+                        Your registered account details.
+                    </small>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div class="row g-4 mt-2">
+
+                <div class="col-md-6">
+                    <div class="information-label">First Name</div>
+                    <div class="information-value">@Model.FirstName</div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="information-label">Last Name</div>
+                    <div class="information-value">@Model.LastName</div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="information-label">Email Address</div>
+                    <div class="information-value">@Model.Email</div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="information-label">Phone Number</div>
+                    <div class="information-value">
+                        @(string.IsNullOrWhiteSpace(Model.PhoneNumber)
+                                                ? "Not provided"
+                                                : Model.PhoneNumber)
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard footer -->
+    <div class="text-center text-muted mt-5">
+        <small>
+            © @DateTime.Now.Year CLOUD 5IVE Bursary Management System.
+            All rights reserved.
+        </small>
+    </div>
+
+</div>

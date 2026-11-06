@@ -1,0 +1,97 @@
+﻿@{
+    // Sets the browser page title.
+    ViewData["Title"] = "Reports Dashboard";
+}
+
+<div class="container mt-4">
+
+    <!-- Reports page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">CLOUD 5IVE</h2>
+        <h4>Reports Dashboard</h4>
+
+        <p class="text-muted">
+            Generate and view reports about applicants, applications and bursary payments.
+        </p>
+    </div>
+
+    <hr />
+
+    <!-- Available system reports -->
+    <div class="row g-4">
+
+        <!-- Applicant Report -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold">Applicant Report</h5>
+
+                    <p class="text-muted">
+                        View registered applicants and their personal information.
+                    </p>
+
+                    <a asp-controller="Reports"
+                       asp-action="Applicants"
+                       class="btn btn-outline-primary w-100">
+                        View Applicant Report
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Application Report -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold">Application Report</h5>
+
+                    <p class="text-muted">
+                        View submitted bursary applications and their current statuses.
+                    </p>
+
+                    <a asp-controller="Reports"
+                       asp-action="Applications"
+                       class="btn btn-outline-primary w-100">
+                        View Application Report
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Report -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold">Payment Report</h5>
+
+                    <p class="text-muted">
+                        View recorded bursary payments, beneficiaries and payment statuses.
+                    </p>
+
+                    <a asp-controller="Reports"
+                       asp-action="Payments"
+                       class="btn btn-outline-primary w-100">
+                        View Payment Report
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="mt-4" />
+
+    <!-- Return to administrator dashboard -->
+    <a asp-controller="AdminDashboard"
+       asp-action="Index"
+       class="btn btn-outline-secondary">
+        Back to Dashboard
+    </a>
+
+</div>

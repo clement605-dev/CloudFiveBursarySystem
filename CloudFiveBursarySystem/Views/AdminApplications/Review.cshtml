@@ -1,0 +1,168 @@
+﻿@model CloudFiveBursarySystem.ViewModels.ReviewApplicationViewModel
+
+@{
+    ViewData["Title"] = "Review Application";
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Review Bursary Application</h2>
+
+        <p class="text-muted">
+            Review the applicant's information and update the application status.
+        </p>
+    </div>
+
+    <hr />
+
+    <!-- Application information -->
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-body p-4">
+
+            <h5 class="fw-bold mb-3">Application Information</h5>
+
+            <div class="row">
+
+                <!-- Application reference number -->
+                <div class="col-md-6 mb-3">
+                    <strong>Reference Number:</strong>
+
+                    <p class="text-primary fw-bold">
+                        @Model.ReferenceNumber
+                    </p>
+                </div>
+
+                <!-- Application submission date -->
+                <div class="col-md-6 mb-3">
+                    <strong>Date Submitted:</strong>
+
+                    <p>
+                        @Model.DateSubmitted.ToString("dd MMMM yyyy HH:mm")
+                    </p>
+                </div>
+
+                <!-- Applicant's full name -->
+                <div class="col-md-6 mb-3">
+                    <strong>Applicant Name:</strong>
+
+                    <p>@Model.ApplicantName</p>
+                </div>
+
+                <!-- Applicant's email address -->
+                <div class="col-md-6 mb-3">
+                    <strong>Email Address:</strong>
+
+                    <p>@Model.ApplicantEmail</p>
+                </div>
+
+                <!-- Selected bursary programme -->
+                <div class="col-md-12 mb-3">
+                    <strong>Bursary Programme:</strong>
+
+                    <p>@Model.ProgrammeName</p>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <!-- Administrator review form -->
+            <h5 class="fw-bold mb-3">Administrator Decision</h5>
+
+            <form asp-controller="AdminApplications"
+                  asp-action="Review"
+                  method="post">
+
+                <!-- Identifies which application is being reviewed -->
+                <input type="hidden"
+                       asp-for="BursaryApplicationId" />
+
+                <!-- Displays validation errors -->
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <!-- Application status selection -->
+                <div class="mb-4">
+
+                    <label asp-for="ApplicationStatus"
+                           class="form-label fw-bold">
+                        Application Status
+                    </label>
+
+                    <select asp-for="ApplicationStatus"
+                            class="form-select">
+
+                        <option value="Pending">Pending</option>
+
+                        <option value="Under Review">Under Review</option>
+
+                        <option value="Approved">Approved</option>
+
+                        <option value="Rejected">Rejected</option>
+
+                        <option value="More Information Required">
+                            More Information Required
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="ApplicationStatus"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <!-- Administrator comments -->
+                <div class="mb-4">
+
+                    <label asp-for="AdministratorComments"
+                           class="form-label fw-bold">
+                        Administrator Comments
+                    </label>
+
+                    <textarea asp-for="AdministratorComments"
+                              class="form-control"
+                              rows="5"
+                              maxlength="1000"
+                              placeholder="Enter feedback or additional information for the applicant...">
+                    </textarea>
+
+                    <span asp-validation-for="AdministratorComments"
+                          class="text-danger">
+                    </span>
+
+                    <small class="text-muted">
+                        Maximum of 1,000 characters.
+                    </small>
+
+                </div>
+
+                <!-- Saves the administrator's decision -->
+                <button type="submit" class="btn btn-primary">
+                    Save Application Review
+                </button>
+
+                <!-- Returns to the application list -->
+                <a asp-controller="AdminApplications"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary ms-2">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

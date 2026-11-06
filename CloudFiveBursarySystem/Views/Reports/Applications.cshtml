@@ -1,0 +1,198 @@
+﻿@model IEnumerable<CloudFiveBursarySystem.Models.BursaryApplication>
+
+@{
+    // Sets the browser page title.
+    ViewData["Title"] = "Application Report";
+
+    // Counts all applications returned from the database.
+    var totalApplications = Model.Count();
+
+    // Counts applications according to their current status.
+    var pendingApplications = Model.Count(a => a.ApplicationStatus == "Pending");
+    var approvedApplications = Model.Count(a => a.ApplicationStatus == "Approved");
+    var rejectedApplications = Model.Count(a => a.ApplicationStatus == "Rejected");
+
+    // Formats dates using the South African date format.
+    var southAfricanCulture = new System.Globalization.CultureInfo("en-ZA");
+}
+
+<div class="container mt-4">
+
+    <!-- Report heading and Excel export button -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+        <div>
+            <h2 class="fw-bold">CLOUD 5IVE</h2>
+            <h4>Application Report</h4>
+
+            <p class="text-muted mb-0">
+                A summary of submitted bursary applications and their current statuses.
+            </p>
+        </div>
+
+        <!-- Downloads application records as an Excel spreadsheet -->
+        <a asp-controller="Reports"
+           asp-action="ExportApplications"
+           class="btn btn-success">
+            Export to Excel
+        </a>
+
+    </div>
+
+    <hr />
+
+    <!-- Application summary cards -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Applications</h6>
+                    <h2 class="text-primary fw-bold">@totalApplications</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Pending</h6>
+                    <h2 class="text-warning fw-bold">@pendingApplications</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Approved</h6>
+                    <h2 class="text-success fw-bold">@approvedApplications</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Rejected</h6>
+                    <h2 class="text-danger fw-bold">@rejectedApplications</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Application records -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-3">Submitted Applications</h5>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Reference Number</th>
+                                <th>Applicant</th>
+                                <th>Bursary Programme</th>
+                                <th>Submission Date</th>
+                                <th>Status</th>
+                                <th>Administrator Comments</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var application in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @application.ReferenceNumber
+                                    </td>
+
+                                    <td>
+                                        @application.Applicant?.FirstName
+                                        @application.Applicant?.LastName
+                                    </td>
+
+                                    <td>
+                                        @application.BursaryProgramme?.ProgrammeName
+                                    </td>
+
+                                    <td>
+                                        @application.DateSubmitted.ToString("dd MMM yyyy", southAfricanCulture)
+                                    </td>
+
+                                    <td>
+                                        @switch (application.ApplicationStatus)
+                                        {
+                                            case "Approved":
+                                                <span class="badge bg-success">Approved</span>
+                                                break;
+
+                                            case "Rejected":
+                                                <span class="badge bg-danger">Rejected</span>
+                                                break;
+
+                                            case "Pending":
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                                break;
+
+                                            case "Under Review":
+                                                <span class="badge bg-info text-dark">Under Review</span>
+                                                break;
+
+                                            case "More Information Required":
+                                                <span class="badge bg-secondary">More Information Required</span>
+                                                break;
+
+                                            default:
+                                                <span class="badge bg-dark">
+                                                    @application.ApplicationStatus
+                                                </span>
+                                                break;
+                                        }
+                                </td>
+
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(application.AdministratorComments)
+                                                                    ? "No comments"
+                                                                    : application.AdministratorComments)
+                            </td>
+                        </tr>
+                                                }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    No bursary applications were found.
+                </div>
+            }
+
+            <!-- Navigation buttons -->
+            <hr />
+
+            <a asp-controller="Reports"
+               asp-action="Index"
+               class="btn btn-outline-secondary">
+                Back to Reports
+            </a>
+
+            <a asp-controller="AdminDashboard"
+               asp-action="Index"
+               class="btn btn-outline-primary">
+                Administrator Dashboard
+            </a>
+
+        </div>
+    </div>
+
+</div>

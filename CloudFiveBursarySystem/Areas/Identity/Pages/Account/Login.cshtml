@@ -1,0 +1,334 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<style>
+    /* Main login page background */
+    .login-page {
+        min-height: 650px;
+        padding: 65px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: linear-gradient( 90deg, rgba(7, 24, 52, 0.85), rgba(7, 24, 52, 0.45) ), url('/images/cloudfive-login-background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /* Login card */
+    .login-card {
+        width: 100%;
+        max-width: 430px;
+        background: rgba(255, 255, 255, 0.97);
+        border-radius: 20px;
+        padding: 38px;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Branding */
+    .login-logo {
+        width: 62px;
+        height: 62px;
+        margin: 0 auto 14px;
+        border-radius: 15px;
+        background: #10294c;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 29px;
+    }
+
+    .login-brand {
+        text-align: center;
+        color: #10294c;
+        font-weight: 800;
+        font-size: 24px;
+        letter-spacing: 1px;
+        margin-bottom: 3px;
+    }
+
+    .login-subtitle {
+        text-align: center;
+        color: #73829a;
+        font-size: 11px;
+        letter-spacing: 2px;
+        margin-bottom: 28px;
+    }
+
+    .login-heading {
+        text-align: center;
+        color: #10294c;
+        font-weight: 700;
+        font-size: 23px;
+        margin-bottom: 6px;
+    }
+
+    .login-description {
+        text-align: center;
+        color: #78869b;
+        font-size: 13px;
+        margin-bottom: 28px;
+    }
+
+    /* Input fields */
+    .login-card .form-floating {
+        margin-bottom: 18px;
+    }
+
+    .login-card .form-control {
+        height: 54px;
+        border: 1px solid #dce3ed;
+        border-radius: 9px;
+        background: #f5f8fc;
+        font-size: 14px;
+    }
+
+        .login-card .form-control:focus {
+            border-color: #2457c5;
+            box-shadow: 0 0 0 3px rgba(36, 87, 197, 0.12);
+            background: white;
+        }
+
+    .login-card .form-floating label {
+        color: #68788e;
+        font-size: 13px;
+    }
+
+    /* Remember me and forgot password */
+    .login-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin: 12px 0 23px;
+        font-size: 12px;
+    }
+
+        .login-options a,
+        .login-links a {
+            color: #2457c5;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+            .login-options a:hover,
+            .login-links a:hover {
+                text-decoration: underline;
+            }
+
+    /* Login button */
+    .login-button {
+        width: 100%;
+        height: 48px;
+        background: #10294c;
+        border: none;
+        border-radius: 9px;
+        color: white;
+        font-weight: 700;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+
+        .login-button:hover {
+            background: #2457c5;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 41, 76, 0.2);
+        }
+
+    /* Registration links */
+    .login-links {
+        text-align: center;
+        border-top: 1px solid #edf0f5;
+        margin-top: 25px;
+        padding-top: 20px;
+        font-size: 12px;
+        color: #78869b;
+    }
+
+        .login-links p {
+            margin-bottom: 12px;
+        }
+
+        .login-links .resend-link {
+            font-size: 11px;
+            font-weight: 400;
+            color: #78869b;
+        }
+
+    /* Validation messages */
+    .login-card .text-danger {
+        font-size: 12px;
+    }
+
+    /* Mobile layout */
+    @@media (max-width: 576px) {
+        .login-page {
+            padding: 35px 15px;
+            min-height: 600px;
+            background-position: 60% center;
+        }
+
+        .login-card {
+            padding: 28px 23px;
+        }
+    }
+</style>
+
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <!-- CLOUD 5IVE branding -->
+        <div class="login-logo">
+            <i class="bi bi-mortarboard-fill"></i>
+        </div>
+
+        <div class="login-brand">
+            CLOUD 5IVE
+        </div>
+
+        <div class="login-subtitle">
+            BURSARY MANAGEMENT SYSTEM
+        </div>
+
+
+        <!-- Welcome message -->
+        <h2 class="login-heading">
+            Welcome Back!
+        </h2>
+
+        <p class="login-description">
+            Log in to access your bursary account.
+        </p>
+
+
+        <!-- Login form -->
+        <form id="account" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3"
+                 role="alert">
+            </div>
+
+
+            <!-- Email -->
+            <div class="form-floating">
+
+                <input asp-for="Input.Email"
+                       class="form-control"
+                       autocomplete="username"
+                       aria-required="true"
+                       placeholder="name@example.com" />
+
+                <label asp-for="Input.Email">
+                    Email Address
+                </label>
+
+                <span asp-validation-for="Input.Email"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="form-floating">
+
+                <input asp-for="Input.Password"
+                       class="form-control"
+                       autocomplete="current-password"
+                       aria-required="true"
+                       placeholder="Password" />
+
+                <label asp-for="Input.Password">
+                    Password
+                </label>
+
+                <span asp-validation-for="Input.Password"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <!-- Remember me and forgot password -->
+            <div class="login-options">
+
+                <div class="form-check">
+
+                    <input class="form-check-input"
+                           asp-for="Input.RememberMe" />
+
+                    <label class="form-check-label"
+                           asp-for="Input.RememberMe">
+                        Remember me
+                    </label>
+
+                </div>
+
+                <a id="forgot-password"
+                   asp-page="./ForgotPassword">
+                    Forgot password?
+                </a>
+
+            </div>
+
+
+            <!-- Submit button -->
+            <button id="login-submit"
+                    type="submit"
+                    class="login-button">
+
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                Sign In
+
+            </button>
+
+
+            <!-- Additional account links -->
+            <div class="login-links">
+
+                <p>
+                    Don't have an account?
+
+                    <a asp-page="./Register"
+                       asp-route-returnUrl="@Model.ReturnUrl">
+                        Create an account
+                    </a>
+                </p>
+
+                <p>
+                    <a id="resend-confirmation"
+                       asp-page="./ResendEmailConfirmation"
+                       class="resend-link">
+
+                        <i class="bi bi-envelope me-1"></i>
+                        Resend email confirmation
+
+                    </a>
+                </p>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

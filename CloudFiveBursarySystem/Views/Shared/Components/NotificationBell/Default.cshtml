@@ -1,0 +1,105 @@
+﻿@model CloudFiveBursarySystem.ViewModels.NotificationBellViewModel
+
+<div class="nav-item dropdown notification-bell-container">
+
+    <a class="nav-link notification-bell-link"
+       href="#"
+       id="notificationDropdown"
+       role="button"
+       data-bs-toggle="dropdown"
+       aria-expanded="false"
+       aria-label="Notifications">
+
+        <i class="bi bi-bell-fill"></i>
+
+        @if (Model.UnreadCount > 0)
+        {
+            <span class="notification-badge">
+                @(Model.UnreadCount > 99 ? "99+" : Model.UnreadCount)
+            </span>
+        }
+
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-end notification-dropdown shadow"
+         aria-labelledby="notificationDropdown">
+
+        <div class="notification-dropdown-header">
+            <strong>Notifications</strong>
+
+            <span class="badge bg-primary">
+                @Model.UnreadCount Unread
+            </span>
+        </div>
+
+        @if (Model.RecentNotifications.Any())
+        {
+            @foreach (var notification in Model.RecentNotifications)
+            {
+                <a asp-controller="Notifications"
+                   asp-action="Open"
+                   asp-route-id="@notification.NotificationId"
+                   class="dropdown-item notification-item
+                                  @(notification.IsRead ? "" : "notification-unread")">
+
+                    <div class="d-flex align-items-start">
+
+                        <i class="bi bi-bell me-2 text-primary"></i>
+
+                        <div class="flex-grow-1">
+
+                            <div class="fw-bold">
+                                @notification.Title
+                            </div>
+
+                            <small class="text-muted">
+                                @(notification.Message.Length > 65
+                                                        ? notification.Message.Substring(0, 65) + "..."
+                                                        : notification.Message)
+                    </small>
+
+                            <div class="notification-date">
+                                @notification.DateCreated.ToString("dd MMM yyyy, HH:mm")
+                            </div>
+
+                        </div>
+
+                @if (!notification.IsRead)
+                        {
+                            <span class="unread-dot"></span>
+                        }
+
+                    </div>
+
+                </a>
+            }
+        }
+        else
+        {
+            <div class="text-center p-4">
+
+                <i class="bi bi-bell-slash text-muted fs-3"></i>
+
+                <p class="text-muted mb-0 mt-2">
+                    No notifications yet.
+                </p>
+
+            </div>
+        }
+
+        <div class="notification-dropdown-footer">
+
+            <a asp-controller="Notifications"
+               asp-action="Index"
+               class="text-primary text-decoration-none fw-semibold">
+
+                View All Notifications
+                <i class="bi bi-arrow-right ms-1"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

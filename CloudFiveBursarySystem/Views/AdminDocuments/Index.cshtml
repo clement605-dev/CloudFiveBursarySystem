@@ -1,0 +1,236 @@
+﻿@model IEnumerable<CloudFiveBursarySystem.Models.ApplicantDocument>
+
+@{
+    ViewData["Title"] = "Document Verification";
+    var documentList = Model.ToList();
+
+    var pendingCount = documentList.Count(d => d.DocumentStatus == "Pending");
+    var verifiedCount = documentList.Count(d => d.DocumentStatus == "Verified");
+    var rejectedCount = documentList.Count(d => d.DocumentStatus == "Rejected");
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Document Verification</h2>
+        <p class="text-muted">
+            Review and verify supporting documents submitted by applicants.
+        </p>
+    </div>
+
+    <!-- Success message -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Error message -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Document statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Pending Verification</p>
+                    <h3 class="fw-bold text-warning">@pendingCount</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Verified Documents</p>
+                    <h3 class="fw-bold text-success">@verifiedCount</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Rejected Documents</p>
+                    <h3 class="fw-bold text-danger">@rejectedCount</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Applicant documents -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0 fw-bold">Applicant Documents</h5>
+        </div>
+
+        <div class="card-body">
+
+            @if (!documentList.Any())
+            {
+                <div class="text-center py-5">
+                    <h5>No documents submitted yet</h5>
+                    <p class="text-muted mb-0">
+                        Applicant documents will appear here once uploaded.
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Applicant</th>
+                                <th>Document Category</th>
+                                <th>File Name</th>
+                                <th>Date Uploaded</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var document in documentList)
+                            {
+                                <tr>
+
+                                    <td>
+                                        <strong>
+                                            @(document.Applicant?.FirstName ?? "Unknown")
+                                            @(document.Applicant?.LastName ?? "")
+                                        </strong>
+                                    </td>
+
+                                    <td>@document.DocumentType</td>
+
+                                    <td>
+                                        <span class="small">@document.DocumentName</span>
+                                    </td>
+
+                                    <td>
+                                        @document.DateUploaded.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td>
+                                        @if (document.DocumentStatus == "Verified")
+                                        {
+                                            <span class="badge bg-success">Verified</span>
+                                        }
+                                        else if (document.DocumentStatus == "Rejected")
+                                        {
+                                            <span class="badge bg-danger">Rejected</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-wrap gap-2">
+
+                                            <!-- Download document -->
+                                            <a asp-controller="AdminDocuments"
+                                               asp-action="Download"
+                                               asp-route-id="@document.ApplicantDocumentId"
+                                               class="btn btn-sm btn-outline-primary">
+                                                Download
+                                            </a>
+
+                                            <!-- Verify document -->
+                                            @if (document.DocumentStatus != "Verified")
+                                            {
+                                                <form asp-controller="AdminDocuments"
+                                                      asp-action="Verify"
+                                                      asp-route-id="@document.ApplicantDocumentId"
+                                                      method="post">
+
+                                                    @Html.AntiForgeryToken()
+
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-success"
+                                                            onclick="return confirm('Are you sure you want to verify this document?');">
+                                                        Verify
+                                                    </button>
+
+                                                </form>
+                                            }
+
+                                        </div>
+
+                                        <!-- Rejection reason -->
+                                        @if (document.DocumentStatus != "Rejected")
+                                        {
+                                            <div class="mt-3">
+
+                                                <form asp-controller="AdminDocuments"
+                                                      asp-action="Reject"
+                                                      asp-route-id="@document.ApplicantDocumentId"
+                                                      method="post">
+
+                                                    @Html.AntiForgeryToken()
+
+                                                    <label class="form-label small fw-bold">
+                                                        Rejection Reason
+                                                    </label>
+
+                                                    <textarea name="adminComment"
+                                                  class="form-control form-control-sm mb-2"
+                                                  rows="2"
+                                                  maxlength="1000"
+                                                  required
+                                                  placeholder="Explain why this document is being rejected..."></textarea>
+
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-danger"
+                                                            onclick="return confirm('Are you sure you want to reject this document?');">
+                                                        Reject Document
+                                                    </button>
+
+                                                </form>
+
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="mt-2">
+                                                <small class="text-danger fw-bold">
+                                                    Rejection reason:
+                                                </small>
+                                                <p class="small mb-0">
+                                                    @document.AdminComment
+                                                </p>
+                                            </div>
+                                        }
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

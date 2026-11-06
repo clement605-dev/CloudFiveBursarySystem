@@ -1,0 +1,140 @@
+﻿@model CloudFiveBursarySystem.Models.BursaryProgramme
+
+@{
+    ViewData["Title"] = "Edit Bursary Programme";
+}
+
+<div class="container mt-4 mb-5">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Edit Bursary Programme</h2>
+        <p class="text-muted">
+            Update the information for this bursary opportunity.
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <form asp-action="Edit" method="post">
+
+                <input type="hidden" asp-for="BursaryProgrammeId" />
+                <input type="hidden" asp-for="DateCreated" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="ProgrammeName" class="form-label fw-semibold">
+                        Programme Name
+                    </label>
+                    <input asp-for="ProgrammeName" class="form-control" />
+                    <span asp-validation-for="ProgrammeName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-semibold">
+                        Description
+                    </label>
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="4"></textarea>
+                    <span asp-validation-for="Description"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EligibilityCriteria"
+                           class="form-label fw-semibold">
+                        Eligibility Criteria
+                    </label>
+                    <textarea asp-for="EligibilityCriteria"
+                              class="form-control"
+                              rows="4"></textarea>
+                    <span asp-validation-for="EligibilityCriteria"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FundingAmount"
+                           class="form-label fw-semibold">
+                        Funding Amount (R)
+                    </label>
+                    <input asp-for="FundingAmount"
+                           type="number"
+                           step="0.01"
+                           class="form-control" />
+                    <span asp-validation-for="FundingAmount"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ApplicationOpeningDate"
+                               class="form-label fw-semibold">
+                            Application Opening Date
+                        </label>
+                        <input asp-for="ApplicationOpeningDate"
+                               type="date"
+                               class="form-control"
+                               value="@Model.ApplicationOpeningDate.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="ApplicationOpeningDate"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ApplicationClosingDate"
+                               class="form-label fw-semibold">
+                            Application Closing Date
+                        </label>
+                        <input asp-for="ApplicationClosingDate"
+                               type="date"
+                               class="form-control"
+                               value="@Model.ApplicationClosingDate.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="ApplicationClosingDate"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ProgrammeStatus"
+                           class="form-label fw-semibold">
+                        Programme Status
+                    </label>
+
+                    <select asp-for="ProgrammeStatus" class="form-select">
+                        <option value="Open">Open</option>
+                        <option value="Closed">Closed</option>
+                        <option value="Upcoming">Upcoming</option>
+                    </select>
+
+                    <span asp-validation-for="ProgrammeStatus"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

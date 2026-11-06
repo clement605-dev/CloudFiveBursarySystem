@@ -1,0 +1,529 @@
+﻿@{
+    // Sets the page title displayed by the browser.
+    ViewData["Title"] = "Administrator Dashboard";
+}
+
+<style>
+    /* Main dashboard container */
+    .admin-dashboard {
+        padding-top: 25px;
+        padding-bottom: 50px;
+    }
+
+    /* Welcome banner with the five-student image */
+    .admin-welcome-banner {
+        position: relative;
+        min-height: 300px;
+        border-radius: 18px;
+        overflow: hidden;
+        background: linear-gradient( 90deg, rgba(9, 29, 65, 0.97) 0%, rgba(9, 29, 65, 0.85) 40%, rgba(9, 29, 65, 0.25) 100% ), url('/images/cloud5ive-five-students-banner.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: center;
+        padding: 45px;
+        color: white;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .admin-welcome-content {
+        max-width: 650px;
+    }
+
+    .admin-welcome-banner h1 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .admin-welcome-banner p {
+        font-size: 16px;
+        line-height: 1.7;
+        color: #e5eaf3;
+    }
+
+    .admin-welcome-label {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 8px 15px;
+        border-radius: 30px;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    /* Section headings */
+    .admin-section-heading {
+        font-weight: 700;
+        color: #172b4d;
+    }
+
+    /* Summary cards */
+    .admin-summary-card {
+        border: none;
+        border-radius: 14px;
+        background: white;
+        height: 100%;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .admin-summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.09);
+        }
+
+        .admin-summary-card .card-body {
+            padding: 25px;
+        }
+
+    /* Summary card icons */
+    .admin-summary-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .admin-icon-blue {
+        background: #e8f0ff;
+        color: #2457c5;
+    }
+
+    .admin-icon-green {
+        background: #e5f7ed;
+        color: #198754;
+    }
+
+    .admin-icon-orange {
+        background: #fff2df;
+        color: #d88917;
+    }
+
+    .admin-icon-purple {
+        background: #f0eaff;
+        color: #7042c0;
+    }
+
+    .admin-summary-label {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .admin-summary-number {
+        font-size: 30px;
+        font-weight: 700;
+        color: #172b4d;
+    }
+
+    /* Administration management cards */
+    .management-card {
+        background: white;
+        border: 1px solid #edf0f5;
+        border-radius: 14px;
+        padding: 25px;
+        height: 100%;
+        text-decoration: none;
+        color: #172b4d;
+        display: block;
+        transition: all 0.2s ease;
+    }
+
+        .management-card:hover {
+            color: #2457c5;
+            border-color: #2457c5;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+        }
+
+    .management-icon {
+        font-size: 29px;
+        color: #2457c5;
+        margin-bottom: 17px;
+        display: inline-block;
+    }
+
+    .management-card h6 {
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .management-card p {
+        color: #6c757d;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    .management-card .card-link-text {
+        display: inline-block;
+        color: #2457c5;
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 18px;
+    }
+
+    /* Dashboard footer */
+    .admin-dashboard-footer {
+        text-align: center;
+        color: #6c757d;
+        margin-top: 45px;
+        font-size: 13px;
+    }
+
+    /* Mobile screen adjustments */
+    @@media (max-width: 768px) {
+        .admin-welcome-banner {
+            padding: 30px 22px;
+            min-height: 260px;
+            background-position: center;
+        }
+
+            .admin-welcome-banner h1 {
+                font-size: 27px;
+            }
+    }
+</style>
+
+<div class="container-fluid admin-dashboard">
+
+    <!-- Administrator welcome banner -->
+    <div class="admin-welcome-banner mb-5">
+
+        <div class="admin-welcome-content">
+
+            <span class="admin-welcome-label">
+                CLOUD 5IVE | ADMINISTRATION PORTAL
+            </span>
+
+            <h1>
+                Welcome, Administrator!
+            </h1>
+
+            <p>
+                Manage bursary programmes, monitor applications,
+                support applicants and oversee beneficiary funding.
+                Everything you need to manage the CLOUD 5IVE
+                bursary system is available here.
+            </p>
+
+            <a asp-controller="AdminApplications"
+               asp-action="Index"
+               class="btn btn-light fw-bold px-4 py-2 mt-2">
+
+                <i class="bi bi-clipboard-check me-2"></i>
+                Review Applications
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Dashboard overview -->
+    <div class="mb-4">
+
+        <h4 class="admin-section-heading">
+            Dashboard Overview
+        </h4>
+
+        <p class="text-muted">
+            Here is a summary of the current bursary management system.
+        </p>
+
+    </div>
+
+    <!-- Administrator summary cards -->
+    <div class="row g-4 mb-5">
+
+        <!-- Total applicants -->
+        <div class="col-md-6 col-lg-3">
+
+            <div class="card admin-summary-card shadow-sm">
+                <div class="card-body">
+
+                    <div class="admin-summary-icon admin-icon-blue">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+
+                    <div class="admin-summary-label">
+                        Total Applicants
+                    </div>
+
+                    <div class="admin-summary-number">
+                        @ViewBag.TotalApplicants
+                    </div>
+
+                    <small class="text-muted">
+                        Registered applicants
+                    </small>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Total bursary programmes -->
+        <div class="col-md-6 col-lg-3">
+
+            <div class="card admin-summary-card shadow-sm">
+                <div class="card-body">
+
+                    <div class="admin-summary-icon admin-icon-green">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+
+                    <div class="admin-summary-label">
+                        Bursary Programmes
+                    </div>
+
+                    <div class="admin-summary-number">
+                        @ViewBag.TotalProgrammes
+                    </div>
+
+                    <small class="text-muted">
+                        Registered programmes
+                    </small>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Pending applications -->
+        <div class="col-md-6 col-lg-3">
+
+            <div class="card admin-summary-card shadow-sm">
+                <div class="card-body">
+
+                    <div class="admin-summary-icon admin-icon-orange">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+
+                    <div class="admin-summary-label">
+                        Pending Applications
+                    </div>
+
+                    <div class="admin-summary-number">
+                        @ViewBag.PendingApplications
+                    </div>
+
+                    <small class="text-muted">
+                        Awaiting administrator review
+                    </small>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Approved applications -->
+        <div class="col-md-6 col-lg-3">
+
+            <div class="card admin-summary-card shadow-sm">
+                <div class="card-body">
+
+                    <div class="admin-summary-icon admin-icon-purple">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+
+                    <div class="admin-summary-label">
+                        Approved Applications
+                    </div>
+
+                    <div class="admin-summary-number">
+                        @ViewBag.ApprovedApplications
+                    </div>
+
+                    <small class="text-muted">
+                        Successfully approved
+                    </small>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Administration management section -->
+    <div class="mb-4">
+
+        <h4 class="admin-section-heading">
+            System Management
+        </h4>
+
+        <p class="text-muted">
+            Access the different management functions of CLOUD 5IVE.
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Manage bursary programmes -->
+        <div class="col-md-6 col-lg-4">
+
+            <a asp-controller="BursaryProgrammes"
+               asp-action="Index"
+               class="management-card shadow-sm">
+
+                <i class="bi bi-mortarboard-fill management-icon"></i>
+
+                <h6>Manage Bursary Programmes</h6>
+
+                <p>
+                    Create new bursary opportunities, update programme
+                    information and manage application opening and closing dates.
+                </p>
+
+                <span class="card-link-text">
+                    Manage Programmes
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </span>
+
+            </a>
+
+        </div>
+
+        <!-- Manage applicants -->
+        <div class="col-md-6 col-lg-4">
+
+            <a asp-controller="AdminDashboard"
+               asp-action="Applicants"
+               class="management-card shadow-sm">
+
+                <i class="bi bi-people-fill management-icon"></i>
+
+                <h6>Manage Applicants</h6>
+
+                <p>
+                    View registered applicants and access their
+                    submitted personal and registration information.
+                </p>
+
+                <span class="card-link-text">
+                    View Applicants
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </span>
+
+            </a>
+
+        </div>
+
+        <!-- Review applications -->
+        <div class="col-md-6 col-lg-4">
+
+            <a asp-controller="AdminApplications"
+               asp-action="Index"
+               class="management-card shadow-sm">
+
+                <i class="bi bi-file-earmark-check-fill management-icon"></i>
+
+                <h6>Review Applications</h6>
+
+                <p>
+                    Examine submitted bursary applications, update
+                    application statuses and provide administrator feedback.
+                </p>
+
+                <span class="card-link-text">
+                    Review Applications
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </span>
+
+            </a>
+
+        </div>
+
+        <!-- Manage beneficiaries -->
+        <div class="col-md-6 col-lg-4">
+
+            <a asp-controller="AdminDashboard"
+               asp-action="Beneficiaries"
+               class="management-card shadow-sm">
+
+                <i class="bi bi-person-check-fill management-icon"></i>
+
+                <h6>Manage Beneficiaries</h6>
+
+                <p>
+                    View approved applicants who have been registered
+                    as bursary beneficiaries and monitor their funding information.
+                </p>
+
+                <span class="card-link-text">
+                    View Beneficiaries
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </span>
+
+            </a>
+
+        </div>
+
+        <!-- Payment management -->
+        <div class="col-md-6 col-lg-4">
+
+            <a asp-controller="Payments"
+               asp-action="Index"
+               class="management-card shadow-sm">
+
+                <i class="bi bi-cash-stack management-icon"></i>
+
+                <h6>Payment Management</h6>
+
+                <p>
+                    Create and manage bursary payment records,
+                    including payment references, amounts and payment statuses.
+                </p>
+
+                <span class="card-link-text">
+                    Manage Payments
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </span>
+
+            </a>
+
+        </div>
+
+        <!-- Reports and analytics -->
+        <div class="col-md-6 col-lg-4">
+
+            <a asp-controller="Reports"
+               asp-action="Index"
+               class="management-card shadow-sm">
+
+                <i class="bi bi-bar-chart-fill management-icon"></i>
+
+                <h6>Reports & Analytics</h6>
+
+                <p>
+                    Generate applicant, application and payment reports
+                    to support bursary administration and record keeping.
+                </p>
+
+                <span class="card-link-text">
+                    Generate Reports
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Dashboard footer -->
+    <div class="admin-dashboard-footer">
+
+        <small>
+            © @DateTime.Now.Year CLOUD 5IVE Bursary Management System.
+            All rights reserved.
+        </small>
+
+    </div>
+
+</div>

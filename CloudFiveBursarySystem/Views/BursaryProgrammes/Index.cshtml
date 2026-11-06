@@ -1,0 +1,128 @@
+﻿@model IEnumerable<CloudFiveBursarySystem.Models.BursaryProgramme>
+
+@{
+    ViewData["Title"] = "Manage Bursary Programmes";
+}
+
+<div class="container mt-4">
+
+    <!-- Page heading and description -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Bursary Programmes</h2>
+            <p class="text-muted">
+                Create, view and manage bursary opportunities.
+            </p>
+        </div>
+
+        <!-- Opens the form for adding a new programme -->
+        <a asp-action="Create" class="btn btn-primary">
+            + Add New Programme
+        </a>
+    </div>
+
+    <!-- Displays a message when no programmes exist -->
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No bursary programmes have been added yet.
+            Select "Add New Programme" to create one.
+        </div>
+    }
+    else
+    {
+        <!-- Displays all bursary programmes in a table -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Programme Name</th>
+                                <th>Funding Amount</th>
+                                <th>Opening Date</th>
+                                <th>Closing Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var programme in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            @programme.ProgrammeName
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        R @programme.FundingAmount.ToString("N2")
+                                    </td>
+
+                                    <td>
+                                        @programme.ApplicationOpeningDate.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td>
+                                        @programme.ApplicationClosingDate.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td>
+                                        @if (programme.ProgrammeStatus == "Open")
+                                        {
+                                            <span class="badge bg-success">
+                                                Open
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @programme.ProgrammeStatus
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <a asp-action="Details"
+                                           asp-route-id="@programme.BursaryProgrammeId"
+                                           class="btn btn-sm btn-outline-info">
+                                            View
+                                        </a>
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@programme.BursaryProgrammeId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@programme.BursaryProgrammeId"
+                                           class="btn btn-sm btn-outline-danger">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    }
+
+    <!-- Returns the administrator to the main dashboard -->
+    <div class="mt-3">
+        <a asp-controller="AdminDashboard"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Back to Dashboard
+        </a>
+    </div>
+
+</div>

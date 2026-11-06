@@ -1,0 +1,191 @@
+﻿@model IEnumerable<CloudFiveBursarySystem.Models.BursaryApplication>
+
+@{
+    ViewData["Title"] = "My Applications";
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">My Applications</h2>
+
+        <p class="text-muted">
+            View your submitted bursary applications and track their progress.
+        </p>
+    </div>
+
+    <hr />
+
+    <!-- Displays a success message after an application is submitted -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+            </button>
+        </div>
+    }
+
+    <!-- Displays an error message when something goes wrong -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+            </button>
+        </div>
+    }
+
+    <!-- Checks whether the applicant has submitted any applications -->
+    @if (!Model.Any())
+    {
+        <div class="card shadow-sm border-0 mt-4">
+
+            <div class="card-body text-center p-5">
+
+                <h4 class="fw-bold">No Applications Yet</h4>
+
+                <p class="text-muted">
+                    You have not submitted any bursary applications.
+                    Explore the available programmes to get started.
+                </p>
+
+                <a asp-controller="AvailableBursaries"
+                   asp-action="Index"
+                   class="btn btn-primary mt-2">
+                    Browse Available Bursaries
+                </a>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- Displays all applications belonging to the logged-in applicant -->
+        <div class="card shadow-sm border-0 mt-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-3">Application History</h5>
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Reference Number</th>
+                                <th>Bursary Programme</th>
+                                <th>Date Submitted</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var application in Model)
+                            {
+                                <tr>
+
+                                    <!-- Unique application reference -->
+                                    <td>
+                                        <strong>
+                                            @application.ReferenceNumber
+                                        </strong>
+                                    </td>
+
+                                    <!-- Name of the bursary programme -->
+                                    <td>
+                                        @(application.BursaryProgramme?.ProgrammeName ?? "Programme unavailable")
+                                    </td>
+
+                                    <!-- Date the application was submitted -->
+                                    <td>
+                                        @application.DateSubmitted.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <!-- Current application status -->
+                                    <td>
+                                        @switch (application.ApplicationStatus)
+                                        {
+                                            case "Pending":
+                                                <span class="badge bg-warning text-dark">
+                                                    Pending
+                                                </span>
+                                                break;
+
+                                            case "Under Review":
+                                                <span class="badge bg-info text-dark">
+                                                    Under Review
+                                                </span>
+                                                break;
+
+                                            case "Approved":
+                                                <span class="badge bg-success">
+                                                    Approved
+                                                </span>
+                                                break;
+
+                                            case "Rejected":
+                                                <span class="badge bg-danger">
+                                                    Rejected
+                                                </span>
+                                                break;
+
+                                            case "More Information Required":
+                                                <span class="badge bg-secondary">
+                                                    More Information Required
+                                                </span>
+                                                break;
+
+                                            default:
+                                                <span class="badge bg-secondary">
+                                                    @application.ApplicationStatus
+                                                </span>
+                                                break;
+                                        }
+                                    </td>
+
+                                    <!-- Opens the individual application details -->
+                                    <td>
+                                        <a asp-controller="Applications"
+                                           asp-action="Details"
+                                           asp-route-id="@application.BursaryApplicationId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            View Details
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <!-- Allows applicants to explore other bursary opportunities -->
+                <a asp-controller="AvailableBursaries"
+                   asp-action="Index"
+                   class="btn btn-primary mt-3">
+                    Browse More Bursaries
+                </a>
+
+            </div>
+
+        </div>
+    }
+
+</div>

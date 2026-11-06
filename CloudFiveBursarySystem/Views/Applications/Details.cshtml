@@ -1,0 +1,159 @@
+﻿@model CloudFiveBursarySystem.Models.BursaryApplication
+
+@{
+    ViewData["Title"] = "Application Details";
+
+    // Determines the appropriate badge colour for the application status.
+    string statusClass = Model.ApplicationStatus switch
+    {
+        "Pending" => "bg-warning text-dark",
+        "Under Review" => "bg-info text-dark",
+        "Approved" => "bg-success",
+        "Rejected" => "bg-danger",
+        "More Information Required" => "bg-secondary",
+        _ => "bg-secondary"
+    };
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Application Details</h2>
+
+        <p class="text-muted">
+            View your bursary application information and track its progress.
+        </p>
+    </div>
+
+    <hr />
+
+    <!-- Application information card -->
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-body p-4">
+
+            <!-- Application reference number -->
+            <div class="mb-4">
+                <h5 class="fw-bold">Application Reference Number</h5>
+
+                <h4 class="text-primary">
+                    @Model.ReferenceNumber
+                </h4>
+
+                <p class="text-muted">
+                    Keep this reference number for future enquiries.
+                </p>
+            </div>
+
+            <hr />
+
+            <!-- Bursary programme information -->
+            <h5 class="fw-bold mb-3">Bursary Programme Information</h5>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <strong>Programme Name:</strong>
+
+                    <p>
+                        @(Model.BursaryProgramme?.ProgrammeName ?? "Programme unavailable")
+                    </p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Funding Amount:</strong>
+
+                    <p>
+                        @if (Model.BursaryProgramme != null)
+                        {
+                            @:R @Model.BursaryProgramme.FundingAmount.ToString("N2")
+                        }
+                        else
+                        {
+                            @:Not available
+                        }
+                    </p>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <!-- Application submission information -->
+            <h5 class="fw-bold mb-3">Submission Information</h5>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <strong>Date Submitted:</strong>
+
+                    <p>
+                        @Model.DateSubmitted.ToString("dd MMMM yyyy")
+                    </p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Time Submitted:</strong>
+
+                    <p>
+                        @Model.DateSubmitted.ToString("HH:mm")
+                    </p>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <!-- Current application status -->
+            <h5 class="fw-bold mb-3">Application Status</h5>
+
+            <div class="mb-3">
+                <span class="badge @statusClass fs-6">
+                    @Model.ApplicationStatus
+                </span>
+            </div>
+
+            <p class="text-muted">
+                Your application status will be updated when the
+                administrator reviews your submission.
+            </p>
+
+            <!-- Displays administrator feedback when available -->
+            @if (!string.IsNullOrWhiteSpace(Model.AdministratorComments))
+            {
+                <div class="alert alert-info mt-4">
+
+                    <h6 class="fw-bold">Administrator Feedback</h6>
+
+                    <p class="mb-0">
+                        @Model.AdministratorComments
+                    </p>
+
+                </div>
+            }
+
+            <hr />
+
+            <!-- Navigation buttons -->
+            <div class="d-flex gap-2 flex-wrap">
+
+                <a asp-controller="Applications"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Back to My Applications
+                </a>
+
+                <a asp-controller="AvailableBursaries"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Browse Available Bursaries
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

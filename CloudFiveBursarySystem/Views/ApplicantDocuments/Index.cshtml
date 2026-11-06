@@ -1,0 +1,502 @@
+﻿@model IEnumerable<CloudFiveBursarySystem.Models.ApplicantDocument>
+
+@{
+    ViewData["Title"] = "My Documents";
+
+    var allowedTypes = ViewBag.AllowedDocumentTypes as string[]
+        ?? Array.Empty<string>();
+
+    var uploadedTypes = Model
+        .Select(d => d.DocumentType)
+        .Distinct()
+        .ToHashSet();
+
+    var totalDocuments = Model.Count();
+    var pendingDocuments = Model.Count(d => d.DocumentStatus == "Pending");
+    var verifiedDocuments = Model.Count(d => d.DocumentStatus == "Verified");
+    var rejectedDocuments = Model.Count(d => d.DocumentStatus == "Rejected");
+}
+
+<style>
+    .documents-page {
+        padding: 25px 0 50px;
+        color: #172b4d;
+    }
+
+    .documents-header {
+        background: linear-gradient(120deg, #102b50, #1764c0);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+    }
+
+        .documents-header h2 {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 22px;
+        box-shadow: 0 3px 12px rgba(0,0,0,.06);
+        height: 100%;
+    }
+
+    .stat-number {
+        font-size: 28px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+
+    .document-section {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        margin-top: 25px;
+        box-shadow: 0 3px 12px rgba(0,0,0,.06);
+    }
+
+    .document-item {
+        border: 1px solid #e8edf4;
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 12px;
+        transition: .2s;
+    }
+
+        .document-item:hover {
+            border-color: #1764c0;
+            box-shadow: 0 3px 10px rgba(0,0,0,.05);
+        }
+
+    .document-icon {
+        font-size: 25px;
+        color: #1764c0;
+    }
+
+    .upload-button {
+        background: #1764c0;
+        color: white;
+        border: none;
+        padding: 11px 25px;
+        border-radius: 7px;
+        font-weight: 600;
+    }
+
+        .upload-button:hover {
+            background: #104d99;
+            color: white;
+        }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-verified {
+        background: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .status-rejected {
+        background: #f8d7da;
+        color: #842029;
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .requirement-badge {
+        font-size: 11px;
+        padding: 5px 9px;
+        border-radius: 20px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 35px 15px;
+        color: #718096;
+    }
+
+    .admin-feedback {
+        background: #fff5f5;
+        border-left: 4px solid #dc3545;
+        border-radius: 6px;
+        padding: 12px 15px;
+        margin-top: 15px;
+    }
+
+    .verified-feedback {
+        background: #f0fff4;
+        border-left: 4px solid #198754;
+        border-radius: 6px;
+        padding: 12px 15px;
+        margin-top: 15px;
+    }
+</style>
+
+<div class="container documents-page">
+
+    <!-- Page heading -->
+    <div class="documents-header">
+        <h2><i class="bi bi-folder2-open me-2"></i> My Documents</h2>
+
+        <p class="mb-0">
+            Upload and manage the supporting documents required
+            for your bursary applications.
+        </p>
+    </div>
+
+    <!-- Success and error messages -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle me-2"></i>
+            @TempData["Success"]
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-circle me-2"></i>
+            @TempData["Error"]
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Document statistics -->
+    <div class="row g-3">
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="text-muted">Uploaded Documents</div>
+                <div class="stat-number">@totalDocuments</div>
+                <small class="text-muted">Total documents submitted</small>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="text-muted">Pending Verification</div>
+                <div class="stat-number text-warning">@pendingDocuments</div>
+                <small class="text-muted">Awaiting administrator review</small>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="text-muted">Verified Documents</div>
+                <div class="stat-number text-success">@verifiedDocuments</div>
+                <small class="text-muted">Successfully verified</small>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="text-muted">Rejected Documents</div>
+                <div class="stat-number text-danger">@rejectedDocuments</div>
+                <small class="text-muted">Require your attention</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Upload section -->
+    <div class="document-section">
+
+        <h4 class="fw-bold mb-2">
+            <i class="bi bi-cloud-arrow-up me-2"></i>
+            Upload Supporting Document
+        </h4>
+
+        <p class="text-muted">
+            Select the document category and upload the corresponding file.
+        </p>
+
+        <form asp-controller="ApplicantDocuments"
+              asp-action="Upload"
+              method="post"
+              enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Document Category
+                    </label>
+
+                    <select name="documentType"
+                            class="form-select"
+                            required>
+
+                        <option value="">Select document category</option>
+
+                        @foreach (var type in allowedTypes)
+                        {
+                            <option value="@type">@type</option>
+                        }
+
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Choose File
+                    </label>
+
+                    <input type="file"
+                           name="uploadedFile"
+                           class="form-control"
+                           accept=".pdf,.jpg,.jpeg,.png"
+                           required />
+                </div>
+
+                <div class="col-12">
+                    <div class="alert alert-info py-2 mb-0">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Accepted formats: PDF, JPG, JPEG and PNG.
+                        Maximum file size: 5 MB.
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="upload-button">
+                        <i class="bi bi-upload me-2"></i>
+                        Upload Document
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Required document checklist -->
+    <div class="document-section">
+
+        <h4 class="fw-bold mb-3">
+            <i class="bi bi-list-check me-2"></i>
+            Document Checklist
+        </h4>
+
+        <p class="text-muted">
+            Keep track of the supporting documents you have uploaded.
+        </p>
+
+        <div class="row g-3">
+
+            @foreach (var type in allowedTypes)
+            {
+                bool uploaded = uploadedTypes.Contains(type);
+
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-between
+                                    align-items-center border rounded p-3">
+
+                        <span>@type</span>
+
+                        @if (uploaded)
+                        {
+                            <span class="badge bg-success requirement-badge">
+                                Uploaded
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary requirement-badge">
+                                Not Uploaded
+                            </span>
+                        }
+
+                    </div>
+                </div>
+            }
+
+        </div>
+
+        <div class="alert alert-warning mt-3 mb-0">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Some documents may only apply to certain applicants.
+            For example, first-year students may need to provide matric results,
+            while returning students may need an academic transcript.
+            Check the requirements of each bursary programme.
+        </div>
+
+    </div>
+
+    <!-- Uploaded documents -->
+    <div class="document-section">
+
+        <h4 class="fw-bold mb-3">
+            <i class="bi bi-file-earmark-check me-2"></i>
+            My Uploaded Documents
+        </h4>
+
+        @if (!Model.Any())
+        {
+            <div class="empty-state">
+
+                <i class="bi bi-folder-x"
+                   style="font-size: 50px;"></i>
+
+                <h5 class="mt-3">No Documents Uploaded Yet</h5>
+
+                <p>
+                    Your uploaded supporting documents will appear here.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            @foreach (var document in Model)
+            {
+                var statusClass = document.DocumentStatus switch
+                {
+                    "Verified" => "status-verified",
+                    "Rejected" => "status-rejected",
+                    _ => "status-pending"
+                };
+
+                <div class="document-item">
+
+                    <div class="row align-items-center g-3">
+
+                        <div class="col-md-1 text-center">
+                            <i class="bi bi-file-earmark-pdf document-icon"></i>
+                        </div>
+
+                        <div class="col-md-5">
+
+                            <div class="fw-bold">
+                                @document.DocumentType
+                            </div>
+
+                            <small class="text-muted">
+                                @document.DocumentName
+                            </small>
+
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <span class="status-badge @statusClass">
+                                @document.DocumentStatus
+                            </span>
+
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <small class="text-muted">
+                                @document.DateUploaded.ToString("dd MMM yyyy")
+                            </small>
+
+                        </div>
+
+                        <div class="col-md-2 text-md-end">
+
+                            <form asp-controller="ApplicantDocuments"
+                                  asp-action="Delete"
+                                  asp-route-id="@document.ApplicantDocumentId"
+                                  method="post"
+                                  onsubmit="return confirm('Are you sure you want to delete this document?');">
+
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit"
+                                        class="btn btn-outline-danger btn-sm">
+
+                                    <i class="bi bi-trash"></i>
+                                    Delete
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Administrator rejection feedback -->
+                    @if (document.DocumentStatus == "Rejected")
+                    {
+                        <div class="admin-feedback">
+
+                            <div class="fw-bold text-danger mb-1">
+                                <i class="bi bi-exclamation-circle me-2"></i>
+                                Administrator Feedback
+                            </div>
+
+                            <p class="mb-0">
+                                @(string.IsNullOrWhiteSpace(document.AdminComment)
+                                                    ? "No rejection reason was provided. Please contact the administrator for clarification."
+                                                    : document.AdminComment)
+                </p>
+
+                            <small class="text-muted d-block mt-2">
+                                Please review the feedback and upload a corrected document.
+                            </small>
+
+                        </div>
+                        }
+
+                    <!-- Verification confirmation -->
+                    @if (document.DocumentStatus == "Verified")
+                    {
+                        <div class="verified-feedback">
+
+                            <div class="fw-bold text-success">
+                                <i class="bi bi-check-circle me-2"></i>
+                                Document Successfully Verified
+                            </div>
+
+                            <small class="text-muted">
+                                Your document has been reviewed and accepted by the administrator.
+                            </small>
+
+                        </div>
+                    }
+
+                    <!-- Pending information -->
+                    @if (document.DocumentStatus == "Pending")
+                    {
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="bi bi-clock me-1"></i>
+                                Your document is waiting for administrator verification.
+                            </small>
+                        </div>
+                    }
+
+                </div>
+            }
+        }
+
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="ApplicantDashboard"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Dashboard
+
+        </a>
+    </div>
+
+</div>

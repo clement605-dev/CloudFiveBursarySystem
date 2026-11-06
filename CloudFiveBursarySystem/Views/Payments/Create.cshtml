@@ -1,0 +1,193 @@
+﻿@model CloudFiveBursarySystem.Models.Payment
+
+@{
+    ViewData["Title"] = "Record Payment";
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Record Bursary Payment</h2>
+
+        <p class="text-muted">
+            Capture payment information for a registered bursary beneficiary.
+        </p>
+    </div>
+
+    <hr />
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-4">Payment Information</h5>
+
+                    <form asp-controller="Payments"
+                          asp-action="Create"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <!-- Displays validation errors -->
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <!-- Beneficiary selection -->
+                        <div class="mb-3">
+
+                            <label asp-for="BeneficiaryId"
+                                   class="form-label fw-semibold">
+                                Select Beneficiary
+                            </label>
+
+                            <select asp-for="BeneficiaryId"
+                                    asp-items="ViewBag.BeneficiaryId"
+                                    class="form-select">
+
+                                <option value="">-- Select a Beneficiary --</option>
+
+                            </select>
+
+                            <span asp-validation-for="BeneficiaryId"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Payment reference -->
+                        <div class="mb-3">
+
+                            <label asp-for="PaymentReference"
+                                   class="form-label fw-semibold">
+                                Payment Reference
+                            </label>
+
+                            <input asp-for="PaymentReference"
+                                   class="form-control"
+                                   placeholder="Enter a unique payment reference" />
+
+                            <span asp-validation-for="PaymentReference"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Payment amount -->
+                        <div class="mb-3">
+
+                            <label asp-for="PaymentAmount"
+                                   class="form-label fw-semibold">
+                                Payment Amount (R)
+                            </label>
+
+                            <input asp-for="PaymentAmount"
+                                   type="number"
+                                   step="0.01"
+                                   min="0.01"
+                                   class="form-control"
+                                   placeholder="e.g. 25000.00" />
+
+                            <span asp-validation-for="PaymentAmount"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Payment date -->
+                        <div class="mb-3">
+
+                            <label asp-for="PaymentDate"
+                                   class="form-label fw-semibold">
+                                Payment Date
+                            </label>
+
+                            <input asp-for="PaymentDate"
+                                   type="date"
+                                   class="form-control" />
+
+                            <span asp-validation-for="PaymentDate"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Payment status -->
+                        <div class="mb-3">
+
+                            <label asp-for="PaymentStatus"
+                                   class="form-label fw-semibold">
+                                Payment Status
+                            </label>
+
+                            <select asp-for="PaymentStatus"
+                                    class="form-select">
+
+                                <option value="Pending">Pending</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Failed">Failed</option>
+
+                            </select>
+
+                            <span asp-validation-for="PaymentStatus"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Optional description -->
+                        <div class="mb-4">
+
+                            <label asp-for="Description"
+                                   class="form-label fw-semibold">
+                                Description / Additional Notes
+                            </label>
+
+                            <textarea asp-for="Description"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Enter any additional payment information (optional)">
+                            </textarea>
+
+                            <span asp-validation-for="Description"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Form buttons -->
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Save Payment Record
+                            </button>
+
+                            <a asp-controller="Payments"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

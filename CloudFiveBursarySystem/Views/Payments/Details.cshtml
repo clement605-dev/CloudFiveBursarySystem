@@ -1,0 +1,131 @@
+﻿@model CloudFiveBursarySystem.Models.Payment
+
+@{
+    ViewData["Title"] = "Payment Details";
+
+
+var currency = new System.Globalization.CultureInfo("en-ZA");
+
+
+}
+
+<div class="container mt-4 mb-5">
+
+    ```
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Payment Details</h2>
+
+        <p class="text-muted">
+            View the complete information for this bursary payment record.
+        </p>
+    </div>
+
+    <hr />
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">Payment Information</h5>
+
+                        @if (Model.PaymentStatus == "Paid")
+                        {
+                            <span class="badge bg-success">Paid</span>
+                        }
+                        else if (Model.PaymentStatus == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                        else if (Model.PaymentStatus == "Failed")
+                        {
+                            <span class="badge bg-danger">Failed</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                @Model.PaymentStatus
+                            </span>
+                        }
+                    </div>
+
+                    <dl class="row">
+
+                        <dt class="col-sm-4">Payment ID</dt>
+                        <dd class="col-sm-8">@Model.PaymentId</dd>
+
+                        <dt class="col-sm-4">Payment Reference</dt>
+                        <dd class="col-sm-8 fw-semibold">
+                            @Model.PaymentReference
+                        </dd>
+
+                        <dt class="col-sm-4">Beneficiary</dt>
+                        <dd class="col-sm-8">
+                            @(Model.Beneficiary?.BursaryApplication?.Applicant == null
+                                                        ? "Beneficiary unavailable"
+                                                        : $"{Model.Beneficiary.BursaryApplication.Applicant.FirstName} {Model.Beneficiary.BursaryApplication.Applicant.LastName}")
+                        </dd>
+
+                        <dt class="col-sm-4">Beneficiary Number</dt>
+                        <dd class="col-sm-8">
+                            @(Model.Beneficiary == null
+                                                        ? "Not available"
+                                                        : $"#{Model.Beneficiary.BeneficiaryId}")
+                        </dd>
+
+                        <dt class="col-sm-4">Payment Amount</dt>
+                        <dd class="col-sm-8 fw-bold text-success">
+                            @Model.PaymentAmount.ToString("C2", currency)
+                        </dd>
+
+                        <dt class="col-sm-4">Payment Date</dt>
+                        <dd class="col-sm-8">
+                            @Model.PaymentDate.ToString("dd MMMM yyyy")
+                        </dd>
+
+                        <dt class="col-sm-4">Payment Status</dt>
+                        <dd class="col-sm-8">
+                            @Model.PaymentStatus
+                        </dd>
+
+                        <dt class="col-sm-4">Description</dt>
+                        <dd class="col-sm-8">
+                            @(string.IsNullOrWhiteSpace(Model.Description)
+                                                        ? "No additional notes provided."
+                                                        : Model.Description)
+                        </dd>
+
+                    </dl>
+
+                    <hr />
+
+                    <!-- Navigation buttons -->
+                    <div class="d-flex gap-2">
+
+                        <a asp-controller="Payments"
+                           asp-action="Edit"
+                           asp-route-id="@Model.PaymentId"
+                           class="btn btn-primary">
+                            Edit Payment
+                        </a>
+
+                        <a asp-controller="Payments"
+                           asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            Back to Payment Records
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    ```
+
+</div>

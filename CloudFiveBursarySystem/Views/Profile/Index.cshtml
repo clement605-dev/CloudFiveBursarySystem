@@ -1,0 +1,291 @@
+﻿@model CloudFiveBursarySystem.ViewModels.ApplicantProfileViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container py-5">
+
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">My Profile</h2>
+        <p class="text-muted">
+            View and manage your personal and academic information.
+            Please make sure your details are correct.
+        </p>
+    </div>
+
+    <!-- Success notification -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+            <strong>Success!</strong> @TempData["SuccessMessage"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+            </button>
+        </div>
+    }
+
+    <div class="row">
+
+        <!-- Profile information card -->
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm rounded-4">
+
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="fw-bold mb-1">Personal Information</h5>
+
+                    <p class="text-muted small">
+                        Update your personal details using the form below.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form asp-controller="Profile"
+                          asp-action="Index"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="row">
+
+                            <!-- First Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FirstName"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="FirstName"
+                                       class="form-control"
+                                       placeholder="Enter your first name" />
+
+                                <span asp-validation-for="FirstName"
+                                      class="text-danger small">
+                                </span>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="LastName"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="LastName"
+                                       class="form-control"
+                                       placeholder="Enter your last name" />
+
+                                <span asp-validation-for="LastName"
+                                      class="text-danger small">
+                                </span>
+                            </div>
+
+                            <!-- ID Number -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="IDNumber"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="IDNumber"
+                                       class="form-control"
+                                       placeholder="Enter your ID number" />
+
+                                <span asp-validation-for="IDNumber"
+                                      class="text-danger small">
+                                </span>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="Email"
+                                       class="form-control"
+                                       placeholder="Enter your email address" />
+
+                                <span asp-validation-for="Email"
+                                      class="text-danger small">
+                                </span>
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PhoneNumber"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="PhoneNumber"
+                                       class="form-control"
+                                       placeholder="Enter your phone number" />
+
+                                <span asp-validation-for="PhoneNumber"
+                                      class="text-danger small">
+                                </span>
+                            </div>
+
+                            <!-- Residential Address -->
+                            <div class="col-md-12 mb-4">
+                                <label asp-for="Address"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <textarea asp-for="Address"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Enter your residential address"></textarea>
+
+                                <span asp-validation-for="Address"
+                                      class="text-danger small">
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Academic Information -->
+                        <div class="mb-3">
+                            <h5 class="fw-bold mb-1">Academic Information</h5>
+
+                            <p class="text-muted small">
+                                Provide details about the institution and
+                                qualification you are currently studying.
+                            </p>
+                        </div>
+
+                        <div class="row">
+
+                            <!-- Institution Name -->
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="InstitutionName"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="InstitutionName"
+                                       class="form-control"
+                                       placeholder="Enter your university or college name" />
+
+                                <span asp-validation-for="InstitutionName"
+                                      class="text-danger small">
+                                </span>
+                            </div>
+
+                            <!-- Course Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CourseName"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="CourseName"
+                                       class="form-control"
+                                       placeholder="e.g. Bachelor of Science in IT" />
+
+                                <span asp-validation-for="CourseName"
+                                      class="text-danger small">
+                                </span>
+                            </div>
+
+                            <!-- Year of Study -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="YearOfStudy"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <select asp-for="YearOfStudy"
+                                        class="form-select">
+
+                                    <option value="">Select your year of study</option>
+                                    <option value="1st Year">1st Year</option>
+                                    <option value="2nd Year">2nd Year</option>
+                                    <option value="3rd Year">3rd Year</option>
+
+                                </select>
+
+                                <span asp-validation-for="YearOfStudy"
+                                      class="text-danger small">
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <!-- Form buttons -->
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Save Changes
+                            </button>
+
+                            <a asp-controller="ApplicantDashboard"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary px-4">
+                                Back to Dashboard
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Information sidebar -->
+        <div class="col-lg-4 mt-4 mt-lg-0">
+
+            <div class="card border-0 shadow-sm rounded-4">
+
+                <div class="card-body p-4">
+
+                    <div class="mb-3">
+                        <span class="badge bg-primary-subtle text-primary px-3 py-2">
+                            Applicant Account
+                        </span>
+                    </div>
+
+                    <h5 class="fw-bold">Keep Your Details Updated</h5>
+
+                    <p class="text-muted small">
+                        Your personal and academic information helps
+                        administrators assess your bursary applications
+                        and confirm your student details.
+                    </p>
+
+                    <hr />
+
+                    <h6 class="fw-bold">Important Reminders</h6>
+
+                    <ul class="text-muted small ps-3">
+                        <li class="mb-2">Make sure your ID number is correct.</li>
+                        <li class="mb-2">Use an active email address.</li>
+                        <li class="mb-2">Keep your contact number updated.</li>
+                        <li class="mb-2">Enter your correct institution name.</li>
+                        <li class="mb-2">Provide your current course name.</li>
+                        <li>Select your current year of study.</li>
+                    </ul>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

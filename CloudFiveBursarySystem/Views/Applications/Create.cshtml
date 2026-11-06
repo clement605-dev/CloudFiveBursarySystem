@@ -1,0 +1,147 @@
+﻿@using CloudFiveBursarySystem.Models
+
+@{
+    ViewData["Title"] = "Submit Bursary Application";
+
+    // Retrieves the bursary programme selected by the applicant.
+    var programme = ViewBag.Programme as BursaryProgramme;
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Bursary Application</h2>
+
+        <p class="text-muted">
+            Review the bursary programme information before submitting
+            your application.
+        </p>
+    </div>
+
+    <hr />
+
+    @if (programme == null)
+    {
+        <!-- Displays a message if programme information is unavailable -->
+        <div class="alert alert-danger">
+            The selected bursary programme could not be found.
+            Please return to the available bursaries page.
+        </div>
+
+        <a asp-controller="AvailableBursaries"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Back to Available Bursaries
+        </a>
+    }
+    else
+    {
+        <!-- Displays the programme information before submission -->
+        <div class="card shadow-sm border-0 mt-4">
+
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold mb-3">
+                    @programme.ProgrammeName
+                </h4>
+
+                <hr />
+
+                <!-- Programme description -->
+                <div class="mb-3">
+                    <strong>Programme Description</strong>
+                    <p class="text-muted mt-1">
+                        @programme.Description
+                    </p>
+                </div>
+
+                <!-- Programme eligibility requirements -->
+                <div class="mb-3">
+                    <strong>Eligibility Criteria</strong>
+                    <p class="text-muted mt-1">
+                        @programme.EligibilityCriteria
+                    </p>
+                </div>
+
+                <!-- Funding amount -->
+                <div class="mb-3">
+                    <strong>Funding Amount</strong>
+                    <p class="text-muted mt-1">
+                        R @programme.FundingAmount.ToString("N2")
+                    </p>
+                </div>
+
+                <!-- Application closing date -->
+                <div class="mb-3">
+                    <strong>Application Closing Date</strong>
+                    <p class="text-muted mt-1">
+                        @programme.ApplicationClosingDate.ToString("dd MMMM yyyy")
+                    </p>
+                </div>
+
+                <hr />
+
+                <!-- Explains what happens after submission -->
+                <div class="alert alert-info">
+                    <strong>Important Information</strong>
+
+                    <p class="mb-0 mt-2">
+                        Once you submit your application, it will be
+                        recorded in the system with a Pending status.
+                        The bursary administrator will review it and
+                        update its status when a decision is made.
+                    </p>
+                </div>
+
+                <!-- Application submission form -->
+                <form asp-controller="Applications"
+                      asp-action="Create"
+                      method="post">
+
+                    <!-- Sends the selected programme ID to the controller -->
+                    <input type="hidden"
+                           name="bursaryProgrammeId"
+                           value="@programme.BursaryProgrammeId" />
+
+                    <!-- Applicant confirms their intention to apply -->
+                    <div class="form-check mb-4">
+
+                        <input class="form-check-input"
+                               type="checkbox"
+                               id="confirmApplication"
+                               required />
+
+                        <label class="form-check-label"
+                               for="confirmApplication">
+                            I confirm that I want to submit an application
+                            for this bursary programme.
+                        </label>
+
+                    </div>
+
+                    <!-- Submission and cancellation buttons -->
+                    <div class="d-flex gap-2 flex-wrap">
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Submit Application
+                        </button>
+
+                        <a asp-controller="AvailableBursaries"
+                           asp-action="Details"
+                           asp-route-id="@programme.BursaryProgrammeId"
+                           class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    }
+
+</div>

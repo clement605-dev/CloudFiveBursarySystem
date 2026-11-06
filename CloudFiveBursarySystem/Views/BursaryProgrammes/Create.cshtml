@@ -1,0 +1,179 @@
+﻿@model CloudFiveBursarySystem.Models.BursaryProgramme
+
+@{
+    ViewData["Title"] = "Add Bursary Programme";
+}
+
+<div class="container mt-4">
+
+  
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Add Bursary Programme</h2>
+        <p class="text-muted">
+            Enter the details of the new bursary opportunity.
+        </p>
+    </div>
+
+    <!-- Form for submitting a new bursary programme -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <form asp-action="Create" method="post">
+
+                <!-- Displays validation errors -->
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <!-- Programme name -->
+                <div class="mb-3">
+                    <label asp-for="ProgrammeName"
+                           class="form-label fw-bold">
+                        Programme Name
+                    </label>
+
+                    <input asp-for="ProgrammeName"
+                           class="form-control"
+                           placeholder="Enter programme name" />
+
+                    <span asp-validation-for="ProgrammeName"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Programme description -->
+                <div class="mb-3">
+                    <label asp-for="Description"
+                           class="form-label fw-bold">
+                        Programme Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Describe the bursary programme">
+                </textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Eligibility requirements -->
+                <div class="mb-3">
+                    <label asp-for="EligibilityCriteria"
+                           class="form-label fw-bold">
+                        Eligibility Criteria
+                    </label>
+
+                    <textarea asp-for="EligibilityCriteria"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Explain who qualifies for this bursary">
+                </textarea>
+
+                    <span asp-validation-for="EligibilityCriteria"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Funding amount -->
+                <div class="mb-3">
+                    <label asp-for="FundingAmount"
+                           class="form-label fw-bold">
+                        Funding Amount (R)
+                    </label>
+
+                    <input asp-for="FundingAmount"
+                           type="number"
+                           step="0.01"
+                           min="0.01"
+                           class="form-control"
+                           placeholder="e.g. 25000.00" />
+
+                    <span asp-validation-for="FundingAmount"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Application opening and closing dates -->
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ApplicationOpeningDate"
+                               class="form-label fw-bold">
+                            Application Opening Date
+                        </label>
+
+                        <input asp-for="ApplicationOpeningDate"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="ApplicationOpeningDate"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ApplicationClosingDate"
+                               class="form-label fw-bold">
+                            Application Closing Date
+                        </label>
+
+                        <input asp-for="ApplicationClosingDate"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="ApplicationClosingDate"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Programme status -->
+                <div class="mb-4">
+                    <label asp-for="ProgrammeStatus"
+                           class="form-label fw-bold">
+                        Programme Status
+                    </label>
+
+                    <select asp-for="ProgrammeStatus"
+                            class="form-select">
+                        <option value="Open">Open</option>
+                        <option value="Closed">Closed</option>
+                        <option value="Draft">Draft</option>
+                    </select>
+
+                    <span asp-validation-for="ProgrammeStatus"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Form submission and navigation buttons -->
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save Programme
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+   
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

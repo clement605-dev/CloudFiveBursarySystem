@@ -1,0 +1,128 @@
+﻿@model IEnumerable<CloudFiveBursarySystem.Models.Applicant>
+
+@{
+    // Sets the browser page title.
+    ViewData["Title"] = "Applicant Report";
+
+    // Counts the applicants returned from the database.
+    var totalApplicants = Model.Count();
+
+    // Formats dates using the South African date format.
+    var southAfricanCulture = new System.Globalization.CultureInfo("en-ZA");
+}
+
+<div class="container mt-4">
+
+    <!-- Report heading and Excel export button -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+        <div>
+            <h2 class="fw-bold">CLOUD 5IVE</h2>
+            <h4>Applicant Report</h4>
+
+            <p class="text-muted mb-0">
+                A report of applicants registered in the bursary management system.
+            </p>
+        </div>
+
+        <!-- Downloads applicant records as an Excel spreadsheet -->
+        <a asp-controller="Reports"
+           asp-action="ExportApplicants"
+           class="btn btn-success">
+            Export to Excel
+        </a>
+
+    </div>
+
+    <hr />
+
+    <!-- Applicant summary -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h6 class="text-muted">Total Registered Applicants</h6>
+
+            <h2 class="text-primary fw-bold">
+                @totalApplicants
+            </h2>
+        </div>
+    </div>
+
+    <!-- Applicant records -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-3">Registered Applicants</h5>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Applicant Name</th>
+                                <th>ID Number</th>
+                                <th>Email Address</th>
+                                <th>Phone Number</th>
+                                <th>Date Registered</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var applicant in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @applicant.FirstName @applicant.LastName
+                                    </td>
+
+                                    <td>
+                                        @applicant.IDNumber
+                                    </td>
+
+                                    <td>
+                                        @applicant.Email
+                                    </td>
+
+                                    <td>
+                                        @applicant.PhoneNumber
+                                    </td>
+
+                                    <td>
+                                        @applicant.DateCreated.ToString("dd MMM yyyy", southAfricanCulture)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    No registered applicants were found.
+                </div>
+            }
+
+            <!-- Navigation buttons -->
+            <hr />
+
+            <a asp-controller="Reports"
+               asp-action="Index"
+               class="btn btn-outline-secondary">
+                Back to Reports
+            </a>
+
+            <a asp-controller="AdminDashboard"
+               asp-action="Index"
+               class="btn btn-outline-primary">
+                Administrator Dashboard
+            </a>
+
+        </div>
+    </div>
+
+</div>

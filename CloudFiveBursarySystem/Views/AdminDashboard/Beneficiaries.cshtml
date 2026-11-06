@@ -1,0 +1,185 @@
+﻿@model IEnumerable<CloudFiveBursarySystem.Models.Beneficiary>
+
+@{
+    ViewData["Title"] = "Beneficiary Management";
+
+    // Calculates the number of beneficiaries currently registered.
+    var totalBeneficiaries = Model.Count();
+
+    // Calculates the total funding allocated to all beneficiaries.
+    var totalFunding = Model.Sum(b => b.FundingAmount);
+
+    // Uses South African currency formatting.
+    var southAfricanCulture = new System.Globalization.CultureInfo("en-ZA");
+}
+
+<div class="container mt-4">
+
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Beneficiary Management</h2>
+
+        <p class="text-muted">
+            View and manage applicants who have been approved
+            for bursary funding.
+        </p>
+    </div>
+
+    <hr />
+
+    <!-- Summary cards -->
+    <div class="row g-3 mb-4">
+
+        <!-- Total registered beneficiaries -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Beneficiaries</h6>
+
+                    <h2 class="text-primary fw-bold">
+                        @totalBeneficiaries
+                    </h2>
+
+                    <p class="mb-0">Registered beneficiaries</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total allocated funding -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Funding Allocated</h6>
+
+                    <h2 class="text-success fw-bold">
+                        @totalFunding.ToString("C2", southAfricanCulture)
+                    </h2>
+
+                    <p class="mb-0">Combined beneficiary funding</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Beneficiary records -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0">Registered Beneficiaries</h5>
+
+                <span class="badge bg-primary">
+                    @totalBeneficiaries Records
+                </span>
+            </div>
+
+            @if (Model.Any())
+            {
+                <!-- Displays beneficiary information in a table -->
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Beneficiary</th>
+                                <th>Reference Number</th>
+                                <th>Bursary Programme</th>
+                                <th>Funding Amount</th>
+                                <th>Date Registered</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var beneficiary in Model)
+                            {
+                                <tr>
+
+                                    <!-- Applicant's full name -->
+                                    <td class="fw-semibold">
+                                        @beneficiary.BursaryApplication?.Applicant?.FirstName
+                                        @beneficiary.BursaryApplication?.Applicant?.LastName
+                                    </td>
+
+                                    <!-- Application reference number -->
+                                    <td>
+                                        @(beneficiary.BursaryApplication?.ReferenceNumber ?? "N/A")
+                                    </td>
+
+                                    <!-- Associated bursary programme -->
+                                    <td>
+                                        @(beneficiary.BursaryApplication?.BursaryProgramme?.ProgrammeName ?? "N/A")
+                                    </td>
+
+                                    <!-- Allocated funding -->
+                                    <td class="fw-semibold text-success">
+                                        @beneficiary.FundingAmount.ToString("C2", southAfricanCulture)
+                                    </td>
+
+                                    <!-- Registration date -->
+                                    <td>
+                                        @beneficiary.DateAdded.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <!-- Beneficiary status -->
+                                    <td>
+                                        @if (beneficiary.BeneficiaryStatus == "Active")
+                                        {
+                                            <span class="badge bg-success">
+                                                Active
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @beneficiary.BeneficiaryStatus
+                                            </span>
+                                        }
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <!-- Message displayed when no beneficiaries exist -->
+                <div class="text-center py-5">
+
+                    <h5 class="text-muted">
+                        No Beneficiaries Registered Yet
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Approved applicants will appear here once
+                        they have been registered as beneficiaries.
+                    </p>
+
+                </div>
+            }
+
+            <hr />
+
+            <!-- Navigation back to the administrator dashboard -->
+            <a asp-controller="AdminDashboard"
+               asp-action="Index"
+               class="btn btn-outline-secondary">
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

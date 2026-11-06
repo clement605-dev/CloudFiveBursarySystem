@@ -1,0 +1,94 @@
+﻿@model CloudFiveBursarySystem.Models.BursaryProgramme
+
+@{
+    ViewData["Title"] = "Bursary Programme Details";
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Page heading -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Bursary Programme Details</h2>
+
+        <p class="text-muted">
+            Review the programme information before proceeding.
+        </p>
+    </div>
+
+    <hr />
+
+    <!-- Displays the selected bursary programme -->
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-body p-4">
+
+            <h3 class="fw-bold mb-3">
+                @Model.ProgrammeName
+            </h3>
+
+            <hr />
+
+            <!-- Programme description -->
+            <h5 class="fw-bold">Programme Description</h5>
+
+            <p>@Model.Description</p>
+
+            <!-- Eligibility requirements -->
+            <h5 class="fw-bold mt-4">Eligibility Criteria</h5>
+
+            <p>@Model.EligibilityCriteria</p>
+
+            <!-- Funding amount -->
+            <h5 class="fw-bold mt-4">Funding Amount</h5>
+
+            <p>
+                R @Model.FundingAmount.ToString("N2")
+            </p>
+
+            <!-- Application period -->
+            <h5 class="fw-bold mt-4">Application Period</h5>
+
+            <p>
+                Opening Date:
+                @Model.ApplicationOpeningDate.ToString("dd MMMM yyyy")
+            </p>
+
+            <p>
+                Closing Date:
+                @Model.ApplicationClosingDate.ToString("dd MMMM yyyy")
+            </p>
+
+            <!-- Programme status -->
+            <h5 class="fw-bold mt-4">Programme Status</h5>
+
+            <span class="badge bg-success">
+                @Model.ProgrammeStatus
+            </span>
+
+            <hr class="mt-4" />
+
+            <!-- Navigation and application buttons -->
+            <div class="d-flex gap-2 flex-wrap">
+
+                <!-- Opens the application submission form -->
+                <a asp-controller="Applications"
+                   asp-action="Create"
+                   asp-route-programmeId="@Model.BursaryProgrammeId"
+                   class="btn btn-primary">
+                    Apply for This Bursary
+                </a>
+
+                <!-- Returns to the available bursary programmes -->
+                <a asp-controller="AvailableBursaries"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Back to Available Bursaries
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
