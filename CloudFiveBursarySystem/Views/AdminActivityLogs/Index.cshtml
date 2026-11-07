@@ -61,11 +61,13 @@
                         <div>
                             <p class="text-muted mb-1">Modules Recorded</p>
                             <h3 class="fw-bold mb-0">
-                                @activities.Select(a => a.EntityType)
-                                .Where(t => !string.IsNullOrWhiteSpace(t))
-                                .Distinct()
-                                .Count()
+                                @(activities
+                                                                .Where(a => !string.IsNullOrWhiteSpace(a.EntityType))
+                                                                .Select(a => a.EntityType)
+                                                                .Distinct()
+                                                                .Count())
                             </h3>
+
                         </div>
                         <i class="bi bi-grid-1x2 fs-1 text-success"></i>
                     </div>

@@ -7,13 +7,7 @@
     <UserSecretsId>aspnet-CloudFiveBursarySystem-6e5fc606-97ff-463a-af87-8b56e754fa05</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Controllers\AdminActivityLogsController.cs" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Controllers\AdminActivityLogsController.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.1" />

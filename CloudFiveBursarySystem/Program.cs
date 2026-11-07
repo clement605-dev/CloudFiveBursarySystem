@@ -133,7 +133,10 @@ app.UseAuthorization();
 // 9. APPLICATION ROUTING
 // --------------------------------------------------
 
-// Default MVC route.
+// Register controllers that use attribute-based routes.
+app.MapControllers();
+
+// Register the default conventional MVC route.
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -146,4 +149,17 @@ app.MapRazorPages();
 // 10. START THE APPLICATION
 // --------------------------------------------------
 
+// TEMPORARY TEST: Check whether the application registers this endpoint.
+app.MapGet("/activity-route-test", () =>
+    "Activity route test is working.");
+
+app.MapGet("/debug-endpoints", (
+    IEnumerable<Microsoft.AspNetCore.Routing.EndpointDataSource> dataSources) =>
+{
+    var endpoints = dataSources
+        .SelectMany(source => source.Endpoints)
+        .Select(endpoint => endpoint.DisplayName);
+
+    return string.Join("\n", endpoints);
+});
 app.Run();
