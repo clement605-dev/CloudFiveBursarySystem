@@ -2,254 +2,207 @@
 
 ## 1. Project Overview
 
-CLOUD 5IVE is a Bursary Management System developed to simplify and improve the management of bursary applications.
+CLOUD 5IVE is a web-based Bursary Management System developed to simplify and improve the management of bursary applications.
 
-The system allows applicants to register, manage their profiles, view available bursary programmes, submit applications and upload supporting documents.
+The system provides a centralised platform where students can register, manage their profiles, view available bursary programmes, submit applications and upload supporting documents.
 
-Administrators can manage bursary programmes, review applications, verify documents, manage beneficiaries, record payments, generate reports and monitor system activities.
+Administrators can manage bursary programmes, review applications, verify submitted documents, manage beneficiaries, record payment information and monitor system activities.
 
-## 2. Technologies Used
+The project was developed as part of an academic group project to demonstrate the practical application of software engineering, database management, web development and system security.
 
-The project was developed using the following technologies:
+## 2. Main Features
+
+### Applicant Features
+- Applicant registration and login.
+- Applicant profile management.
+- View available bursary programmes.
+- Submit bursary applications.
+- Upload supporting documents.
+- View application statuses.
+- Receive in-system notifications.
+- View application-related information.
+
+### Administrator Features
+- Secure administrator login.
+- Administrator dashboard.
+- Manage bursary programmes.
+- View and review applications.
+- Approve or reject applications.
+- Request additional information.
+- Verify applicant documents.
+- Register successful applicants as beneficiaries.
+- Manage beneficiary records.
+- Record and monitor payment information.
+- Generate reports.
+- Monitor administrator and applicant activities.
+
+## 3. Technologies Used
+
+The system was developed using the following technologies:
 
 | Technology | Purpose |
 |---|---|
-| C# | Main backend programming language |
+| C# | Backend programming |
 | ASP.NET Core MVC (.NET 8) | Web application framework |
-| HTML5 | Page structure |
-| CSS3 | Styling |
-| JavaScript | Frontend functionality |
-| Bootstrap | Responsive interface design |
-| Microsoft SQL Server | Database management |
-| Entity Framework Core | Database operations |
-| ASP.NET Core Identity | User registration and authentication |
+| HTML5 | Web page structure |
+| CSS3 | Styling and layout |
+| JavaScript | Client-side functionality |
+| Bootstrap | Responsive user interface |
+| Microsoft SQL Server 2022 Express | Database management |
+| Entity Framework Core | Database access and management |
+| ASP.NET Core Identity | Authentication and role management |
 | Visual Studio 2022 | Development environment |
-| GitHub | Source code management and collaboration |
 
-## 3. Software Requirements
+## 4. System Architecture
 
-Before running the project, ensure that your computer has the following installed:
+The application follows the Model-View-Controller (MVC) architectural pattern.
 
-1. Visual Studio 2022.
-2. .NET 8 SDK.
-3. ASP.NET and web development workload in Visual Studio.
-4. Microsoft SQL Server 2022 Express or another compatible SQL Server instance.
-5. SQL Server Management Studio (SSMS) – recommended for viewing and managing the database.
-6. Git – for downloading and updating the project.
+- **Model:** Represents the application's data and business entities.
+- **View:** Provides the user interface displayed to applicants and administrators.
+- **Controller:** Handles user requests, application processes and communication between models and views.
 
-## 4. Downloading the Project from GitHub
+Entity Framework Core is used to communicate with the SQL Server database.
 
-Follow these steps:
+## 5. Database Information
 
-1. Open the project repository:
-
-   https://github.com/clement605-dev/CloudFiveBursarySystem
-
-2. Click the green **Code** button.
-3. Select **Download ZIP**, or clone the repository using Git.
-4. If you downloaded the ZIP file, extract it.
-5. Open the extracted project folder.
-6. Locate `CloudFiveBursarySystem.sln`.
-7. Double-click the solution file to open the project in Visual Studio 2022.
-
-**Important:** Open the `.sln` file, not an individual C# file.
-
-## 5. Setting Up the Database
-
-The project uses Microsoft SQL Server.
-
-Each team member must create their own local database.
-
-### Step 1: Install and Start SQL Server
-
-Make sure SQL Server is installed and running on your computer.
-
-### Step 2: Configure the Connection String
-
-Open the project in Visual Studio.
-
-Locate:
-
-`appsettings.json`
-
-Find the `DefaultConnection` setting.
-
-Update it to match your own SQL Server instance.
-
-Example:
-
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=YOUR_SERVER_NAME;Database=CloudFiveBursaryDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
-}
-```
-
-Replace `YOUR_SERVER_NAME` with your own SQL Server instance.
-
-For example:
-
-```text
-Server=DESKTOP-8HV2L54\SQLEXPRESS
-```
-
-Do not copy another team member's computer name unless it is also your SQL Server instance.
-
-### Step 3: Create the Database
-
-The database can be created using Entity Framework Core migrations.
-
-In Visual Studio:
-
-1. Open **Tools**.
-2. Select **NuGet Package Manager**.
-3. Open **Package Manager Console**.
-4. Make sure the project containing `ApplicationDbContext` is selected as the Default Project.
-5. Run:
-
-```powershell
-Update-Database
-```
-
-This applies the existing migrations and creates the database tables.
-
-Do not create a second set of migrations unnecessarily.
-
-## 6. Running the Application
-
-After configuring the database:
-
-1. Open the solution in Visual Studio 2022.
-2. Allow NuGet packages to restore.
-3. Build the solution.
-4. Confirm that there are no build errors.
-5. Select the HTTPS launch profile.
-6. Click the green **Run** button.
-
-The application should open in your default browser.
-
-## 7. Main System Modules
-
-The system includes the following modules:
-
-### Applicant Modules
-- User registration and login.
-- Applicant dashboard.
-- Personal and academic profile management.
-- Available bursary programmes.
-- Bursary application submission.
-- Supporting document uploads.
-- Application tracking.
-- Notifications.
-
-### Administrator Modules
-- Administrator dashboard.
-- Bursary programme management.
-- Applicant management.
-- Application review and approval.
-- Document verification.
-- Beneficiary management.
-- Payment record management.
-- Report generation.
-- Activity Logs.
-
-## 8. Important Database Information
-
-The database is named:
+Database name:
 
 `CloudFiveBursaryDB`
 
-The project uses Entity Framework Core and SQL Server.
+The database contains the following main application tables:
 
-Database migrations are included in the project under:
+- Applicants
+- BursaryProgrammes
+- BursaryApplications
+- Beneficiaries
+- Payments
+- ApplicantDocuments
+- Notifications
+- ActivityLogs
 
-`Data/Migrations`
+The system also uses ASP.NET Core Identity tables for managing user accounts, authentication and roles.
 
-These migrations are used to create and update the database structure.
+### Database Setup
 
-**Important:** GitHub stores the source code and migration files, not automatically the records inside each member's local database.
+A database setup script is available in:
 
-Each team member will have their own local database unless a shared database is configured separately.
+`CloudFiveBursarySystem/Database/CloudFiveBursaryDB.sql`
 
-## 9. Applicant Document Storage
+To create the database:
 
-Uploaded applicant documents are stored locally in the application's private storage directory:
+1. Download or clone this repository.
+2. Open Microsoft SQL Server Management Studio (SSMS).
+3. Connect to your local SQL Server instance.
+4. Open the `CloudFiveBursaryDB.sql` file.
+5. Execute the script.
+6. Confirm that the `CloudFiveBursaryDB` database has been created.
 
-`App_Data/ApplicantDocuments/`
+**Important:** The SQL script creates the database structure. It does not include existing user accounts, administrator credentials or sample applicant records.
 
-These files are not automatically transferred to other team members through GitHub.
+## 6. Requirements
 
-Use sample or test documents when demonstrating the system. Do not upload real applicant documents, identity documents or other private information to the public repository.
+Before running the application, ensure that you have installed:
 
-## 10. Working with GitHub
+- Visual Studio 2022.
+- .NET 8 SDK.
+- Microsoft SQL Server 2022 Express.
+- SQL Server Management Studio (SSMS).
 
-To receive the latest changes from another team member:
+## 7. Installation and Configuration
 
-1. Open the project in Visual Studio.
-2. Open the Git menu or Git Changes panel.
-3. Select **Pull** to download the latest committed changes.
+### Step 1: Clone the Repository
 
-Before making changes, always pull the latest version.
+Open a terminal and execute:
 
-After completing your assigned work:
+`git clone https://github.com/clement605-dev/CloudFiveBursarySystem.git`
 
-1. Build and test your changes.
-2. Open Git Changes.
-3. Enter a meaningful commit message.
-4. Commit your changes.
-5. Push them to GitHub.
+### Step 2: Open the Project
 
-Avoid editing the same files simultaneously without communicating with the team.
-
-## 11. Troubleshooting
-
-### Database connection error
-
-Check that:
-- SQL Server is installed and running.
-- Your connection string contains the correct server name.
-- Windows Authentication is configured correctly.
-
-### Database or table does not exist
-
-Open Package Manager Console and run:
-
-```powershell
-Update-Database
-```
-
-### Build errors
-
-Try:
-- Restoring NuGet packages.
-- Checking that the .NET 8 SDK is installed.
-- Building the solution again.
-
-### Project does not open
-
-Make sure you opened:
+Open the downloaded solution file:
 
 `CloudFiveBursarySystem.sln`
 
-rather than an individual source-code file.
+Use Visual Studio 2022.
 
-## 12. Project Repository
+### Step 3: Configure the Database Connection
+
+Open `appsettings.json` and update the database connection string to match your local SQL Server instance.
+
+Example:
+
+`Server=YOUR-PC-NAME\\SQLEXPRESS;Database=CloudFiveBursaryDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True`
+
+Replace `YOUR-PC-NAME` with your computer's actual SQL Server instance name.
+
+### Step 4: Restore Dependencies
+
+In Visual Studio, restore the NuGet packages required by the project.
+
+### Step 5: Run the Application
+
+Select the project as the startup project and press:
+
+`F5`
+
+The application should build and launch in your browser.
+
+## 8. User Roles
+
+The system supports two main user roles:
+
+**Applicant**
+- Registers and manages their account.
+- Submits bursary applications.
+- Uploads supporting documents.
+- Monitors application progress.
+
+**Administrator**
+- Manages bursary programmes.
+- Reviews applications and supporting documents.
+- Manages beneficiaries and payment records.
+- Monitors system activities and reports.
+
+The system automatically creates the Applicant and Administrator roles when it starts if they do not already exist.
+
+Administrator login accounts must be created and configured separately.
+
+## 9. Document Storage
+
+Applicant documents are stored separately from the SQL Server database.
+
+The system uses a private application storage directory:
+
+`App_Data/ApplicantDocuments/`
+
+The database stores the document information and file metadata.
+
+## 10. Security Features
+
+The application incorporates several security measures, including:
+
+- ASP.NET Core Identity authentication.
+- Role-based access control.
+- Password requirements.
+- Server-side validation.
+- Anti-forgery token validation for protected form submissions.
+- Applicant document ownership checks.
+- Restricted document storage outside the public web directory.
+- Activity logging.
+
+## 11. Project Repository
 
 GitHub Repository:
 
 https://github.com/clement605-dev/CloudFiveBursarySystem
 
-**Project Name:** CLOUD 5IVE – Bursary Management System
+## 12. Development Team
 
-**Backend:** C# / ASP.NET Core MVC
+**CLOUD 5IVE**
 
-**Database:** Microsoft SQL Server
+This project was developed collaboratively by a team of six students as part of an academic software development project.
 
-**Development Environment:** Visual Studio 2022
+## 13. Conclusion
 
-**Framework:** .NET 8
+CLOUD 5IVE demonstrates how a web-based information system can improve the administration of bursary programmes by providing a centralised platform for application processing, document management, beneficiary administration and reporting.
 
----
-
-**CLOUD 5IVE – Bursary Management System**
-
-Developed as a collaborative academic group project.
+The project provided practical experience in software development, database design, system integration, testing and teamwork.
